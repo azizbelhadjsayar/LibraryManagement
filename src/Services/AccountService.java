@@ -135,7 +135,6 @@ public class AccountService implements AccountDAOInterface {
 				if(ac.getPassword().equals(password)) return ac;
 			}
                         return null;
-                        
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
