@@ -39,7 +39,7 @@ public class Login extends javax.swing.JFrame {
         passwordInput = new javax.swing.JPasswordField();
         loginButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        signUpLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
 
@@ -71,8 +71,8 @@ public class Login extends javax.swing.JFrame {
         jLabel4.setText("Forgot your password ?");
         jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jLabel5.setText("Don't have an account yet ? Sign up");
-        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        signUpLabel.setText("Don't have an account yet ? Sign up");
+        signUpLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -90,7 +90,7 @@ public class Login extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(53, 53, 53)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
+                                    .addComponent(signUpLabel)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(56, 56, 56)
                                         .addComponent(loginButton)))
@@ -123,7 +123,7 @@ public class Login extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addComponent(loginButton)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel5)
+                .addComponent(signUpLabel)
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
@@ -189,11 +189,11 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton loginButton;
     private javax.swing.JPasswordField passwordInput;
+    private javax.swing.JLabel signUpLabel;
     // End of variables declaration//GEN-END:variables
 }
