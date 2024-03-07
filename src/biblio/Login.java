@@ -73,6 +73,11 @@ public class Login extends javax.swing.JFrame {
 
         signUpLabel.setText("Don't have an account yet ? Sign up");
         signUpLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        signUpLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                signUpLabelMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -178,6 +183,12 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please check email or password");
         }
     }//GEN-LAST:event_loginButtonActionPerformed
+
+    private void signUpLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signUpLabelMouseClicked
+        this.setVisible(false);
+        Register register = new Register();
+        register.setVisible(true);
+    }//GEN-LAST:event_signUpLabelMouseClicked
 
     /**
      * @param args the command line arguments
