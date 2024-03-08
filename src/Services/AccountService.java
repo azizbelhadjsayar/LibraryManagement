@@ -31,7 +31,7 @@ public class AccountService implements AccountDAOInterface {
 		try {
                     Connection connection = BibliothequeDAO.getConnection();
                     String INSERT_USER_SQL = "INSERT INTO account (username,password,email, role, dateofcreation, question, response) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                    PreparedStatement statement = connection.prepareStatement(INSERT_USER_SQL);
+                    PreparedStatement statement = connection.prepareStatement(INSERT_USER_SQL, Statement.RETURN_GENERATED_KEYS);
                     statement.setString(1, a.getUsername());
                     statement.setString(2, a.getPassword());
                     statement.setString(3, a.getEmail());
@@ -40,11 +40,15 @@ public class AccountService implements AccountDAOInterface {
                     statement.setString(6, a.getQuestion());
                     statement.setString(7, a.getAnswer());
                     int affectedRows = statement.executeUpdate();
-                    statement.close();
+                    ResultSet generatedKeys = statement.getGeneratedKeys();
                     if(affectedRows==1) {
-                    LibraryCardService lcs = new LibraryCardService();
-                    lcs.insertLibraryCard(a);
-                    return true;
+                        LibraryCardService lcs = new LibraryCardService();
+                        if(generatedKeys.next()){
+                            int id = generatedKeys.getInt(1);
+                            lcs.insertLibraryCard(id);
+                        }
+                        statement.close();
+                        return true;
 	        }
 		} catch(SQLException e) {
                     e.printStackTrace();

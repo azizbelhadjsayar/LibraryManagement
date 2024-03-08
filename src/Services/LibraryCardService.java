@@ -12,17 +12,15 @@ import Interfaces.LibraryCardDAOInterface;
 public class LibraryCardService implements LibraryCardDAOInterface{
 
 	@Override
-	public boolean insertLibraryCard(Account account) {
+	public boolean insertLibraryCard(int id) {
 		try {
 			Connection connection = BibliothequeDAO.getConnection();
-			AccountService as = new AccountService();
 			LibraryCard newLibraryCard = new LibraryCard();
-			account = as.getAccountbyEmail(account.getEmail());
 			String query = "INSERT INTO LibraryCard (barCode, Account_id, issuedAt, Active, dateEndSubscription)"
 					+ " VALUES(?, ?, ?, ?, ?);";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, newLibraryCard.getBarcode());
-			statement.setInt(2, account.getId());
+			statement.setInt(2, id);
 			statement.setString(3, newLibraryCard.getIssuedAt());
 			statement.setBoolean(4, newLibraryCard.isActive());
 			statement.setString(5, newLibraryCard.getDateEndSubscription());

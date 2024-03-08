@@ -5,7 +5,7 @@ import Entities.LibraryCard;
 
 public interface LibraryCardDAOInterface {
 	
-	boolean insertLibraryCard(Account account);
+	boolean insertLibraryCard(int id);
 	LibraryCard getLibraryCardByAccount(Account a);
 	
 	
