@@ -8,6 +8,7 @@ import Entities.Account;
 import Entities.Author;
 import Interfaces.AuthorDAOInterface;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -39,6 +40,26 @@ public class AuthorService implements AuthorDAOInterface{
                 e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean addAuthor(Author a) {
+        try {   
+            Connection connection = BibliothequeDAO.getConnection();
+            String INSERT_BOOK_SQL = "INSERT INTO author (fullname) VALUES (?)";
+            PreparedStatement statement = connection.prepareStatement(INSERT_BOOK_SQL);
+            statement.setString(1, a.getFullname());
+            int affectedRows = statement.executeUpdate();
+            statement.close();
+            return affectedRows==1;
+        } 
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        catch(RuntimeException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     
 }

@@ -16,6 +16,11 @@ public class Author {
         this.id = id;
         this.fullname = fn;
     }
+    
+    public Author(String fn) {
+        this.id=0;
+        this.fullname=fn;
+    }
 
 	public int getId() {
 		return id;

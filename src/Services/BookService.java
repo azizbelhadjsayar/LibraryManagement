@@ -21,8 +21,7 @@ public class BookService implements BookDAOInterface {
 
     @Override
     public boolean addBook(Book b) {
-        try {
-            
+        try {   
             Connection connection = BibliothequeDAO.getConnection();
             String INSERT_BOOK_SQL = "INSERT INTO book (title, author_id, language, numberofpages, numberofitems, price) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(INSERT_BOOK_SQL, Statement.RETURN_GENERATED_KEYS);

@@ -13,4 +13,5 @@ import java.util.ArrayList;
  */
 public interface AuthorDAOInterface {
     ArrayList<Author> getAllAuthors();
+    boolean addAuthor(Author au);
 }
