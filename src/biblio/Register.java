@@ -4,6 +4,7 @@
  */
 package biblio;
 
+import Entities.Access;
 import Entities.Account;
 import Services.AccountService;
 import java.util.regex.Pattern;
@@ -45,7 +46,7 @@ public class Register extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
         passwordCheckBox = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
+        randomButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
@@ -114,9 +115,16 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        randomButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/biblio/assets/dice.png"))); // NOI18N
+        randomButton.setBorder(null);
+        randomButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                randomButtonMouseClicked(evt);
+            }
+        });
+        randomButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                randomButtonActionPerformed(evt);
             }
         });
 
@@ -143,8 +151,8 @@ public class Register extends javax.swing.JFrame {
                                     .addComponent(emailTextField)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton1))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(randomButton))
                                     .addComponent(answerTextField)
                                     .addComponent(passwordCheckBox))
                                 .addContainerGap())
@@ -175,7 +183,7 @@ public class Register extends javax.swing.JFrame {
                     .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(randomButton)
                         .addGap(9, 9, 9)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(passwordCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -187,7 +195,7 @@ public class Register extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(answerTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(backButton)
                     .addComponent(createButton))
@@ -257,15 +265,20 @@ public class Register extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Invalid email syntax");
         }
         
-        //Account newAccount = new Account();
+        Account newAccount = new Account(username, password, email, Access.MEMBER);
+        
         
         
         
     }//GEN-LAST:event_createButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void randomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_randomButtonActionPerformed
+
+    private void randomButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_randomButtonMouseClicked
+        passwordField.setText(AccountService.generateRandomPassword(20));
+    }//GEN-LAST:event_randomButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -307,7 +320,6 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JButton backButton;
     private javax.swing.JButton createButton;
     private javax.swing.JTextField emailTextField;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -316,6 +328,7 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JCheckBox passwordCheckBox;
     private javax.swing.JPasswordField passwordField;
+    private javax.swing.JButton randomButton;
     private javax.swing.JComboBox<String> secretQuesComboBox;
     private javax.swing.JTextField usernameTextField;
     // End of variables declaration//GEN-END:variables

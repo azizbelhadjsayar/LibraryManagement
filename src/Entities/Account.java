@@ -1,5 +1,10 @@
 package Entities;
 
+import Services.AccountService;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -12,13 +17,12 @@ public class Account {
 	private String dateOfCreation;
 	
 
-	public Account(String username, String password, String email, String role) {
+	public Account(String username, String password, String email, Access role) {
 
-		this.id=0;
 		this.username = username;
-		this.password = password;
+		this.password = AccountService.hashPassword(password);
 		this.email = email;
-		this.role = role;
+		this.role = role.name();
 		
 	    LocalDateTime today = LocalDateTime.now();
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -79,5 +83,4 @@ public class Account {
 				+ ", role=" + role + ", dateOfCreation=" + dateOfCreation + "]";
 	}
 
-	
 }

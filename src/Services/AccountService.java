@@ -9,7 +9,20 @@ import java.time.format.DateTimeFormatter;
 
 import Entities.Account;
 import Interfaces.AccountDAOInterface;
+import java.awt.List;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Collections;
 public class AccountService implements AccountDAOInterface {
+    
+    
+	private static final String LOWERCASE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
+	private static final String UPPERCASE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	private static final String NUMERIC_CHARACTERS = "0123456789";
+	private static final String SPECIAL_CHARACTERS = "!@#$%^&*()-=_+[]{}|;:'\"<>,.?/";
 	
 	
 
@@ -130,6 +143,7 @@ public class AccountService implements AccountDAOInterface {
 			Account ac = null;
 			Statement st = connection.createStatement();
 			ResultSet rs = st.executeQuery("select * from account where email ='"+email+"'");
+                        password = AccountService.hashPassword(password);
 			while(rs.next()) {
 				ac = new Account(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
 				if(ac.getPassword().equals(password)) return ac;
@@ -150,5 +164,47 @@ public class AccountService implements AccountDAOInterface {
 		// TODO Auto-generated method stub
 		return false;
 	}
+        
+        
+        public static String generateRandomPassword(int length){
+            if(length < 1) {
+                throw new IllegalArgumentException("Password length must be at least 1");
+            }
+            
+            SecureRandom random = new SecureRandom();
+	    String allCharacters = LOWERCASE_CHARACTERS + UPPERCASE_CHARACTERS + NUMERIC_CHARACTERS + SPECIAL_CHARACTERS;
+            
+                
+            	ArrayList<Character> characters = new ArrayList<>();
+	        for (char c : allCharacters.toCharArray()) {
+	            characters.add(c);
+	        }
+
+	        // Shuffle the characters
+	        Collections.shuffle(characters, random);
+
+	        // Build the password
+	        StringBuilder password = new StringBuilder();
+	        for (int i = 0; i < length; i++) {
+	            int randomIndex = random.nextInt(characters.size());
+	            password.append(characters.get(randomIndex));
+	        }
+
+	        return password.toString();
+        }
+        
+        public static String hashPassword(String password){
+            SecureRandom secureRandom = new SecureRandom();
+            try{
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                byte[] messageDigest = md.digest(password.getBytes());
+                BigInteger bigInt = new BigInteger(1, messageDigest);	
+                return bigInt.toString(16);
+            } 
+            catch (NoSuchAlgorithmException e) {
+		e.printStackTrace();
+		}
+            return null;
+        }
 	
 }
