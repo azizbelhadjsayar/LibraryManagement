@@ -45,6 +45,7 @@ public class AccountService implements AccountDAOInterface {
                         LibraryCardService lcs = new LibraryCardService();
                         if(generatedKeys.next()){
                             int id = generatedKeys.getInt(1);
+                            System.out.println(id);
                             lcs.insertLibraryCard(id);
                         }
                         statement.close();

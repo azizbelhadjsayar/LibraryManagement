@@ -16,14 +16,15 @@ public class LibraryCardService implements LibraryCardDAOInterface{
 		try {
 			Connection connection = BibliothequeDAO.getConnection();
 			LibraryCard newLibraryCard = new LibraryCard();
-			String query = "INSERT INTO LibraryCard (barCode, Account_id, issuedAt, Active, dateEndSubscription)"
-					+ " VALUES(?, ?, ?, ?, ?);";
+			String query = "INSERT INTO LibraryCard (barCode, active, account_id)"
+					+ " VALUES(?, ?, ?);";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, newLibraryCard.getBarcode());
-			statement.setInt(2, id);
-			statement.setString(3, newLibraryCard.getIssuedAt());
-			statement.setBoolean(4, newLibraryCard.isActive());
-			statement.setString(5, newLibraryCard.getDateEndSubscription());
+			statement.setBoolean(2, newLibraryCard.isActive());
+                       	statement.setInt(3, id);
+                        int affectedRows = statement.executeUpdate();
+                        statement.close();
+
 			return true;
 		}
 		catch(Exception ex) {
