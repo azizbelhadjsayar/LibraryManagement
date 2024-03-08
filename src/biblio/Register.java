@@ -49,6 +49,7 @@ public class Register extends javax.swing.JFrame {
         randomButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Register");
         setAutoRequestFocus(false);
         setBackground(new java.awt.Color(102, 255, 102));
 
