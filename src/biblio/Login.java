@@ -168,12 +168,12 @@ public class Login extends javax.swing.JFrame {
         Account ac = as.checkAccount(emailInput.getText(), password);
         if(ac!=null) {
             String role = ac.getRole();
-            if(role.equals("member")) {
+            if(role.toLowerCase().equals("member")) {
                 setVisible(false);
                 MemberMenu ob = new MemberMenu();
                 ob.setVisible(true);
             }
-            else if(role.equals("librarian")) {
+            else if(role.toLowerCase().equals("librarian")) {
                 setVisible(false);
                 LibrarianMenu ob = new LibrarianMenu();
                 ob.setVisible(true);

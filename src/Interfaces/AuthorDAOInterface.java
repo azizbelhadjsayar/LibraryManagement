@@ -4,12 +4,13 @@
  */
 package Interfaces;
 
-import Entities.BookItem;
+import Entities.Author;
+import java.util.ArrayList;
 
 /**
  *
  * @author LENOVO
  */
-public interface BookItemDAOInterface {
-    void addBookItem(int isbn);
+public interface AuthorDAOInterface {
+    ArrayList<Author> getAllAuthors();
 }
