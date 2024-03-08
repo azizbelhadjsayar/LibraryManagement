@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import Entities.Account;
 import Entities.LibraryCard;
 import Interfaces.LibraryCardDAOInterface;
+import java.beans.Statement;
+import java.util.Vector;
 
 public class LibraryCardService implements LibraryCardDAOInterface{
 
@@ -50,5 +52,20 @@ public class LibraryCardService implements LibraryCardDAOInterface{
 		}
 		return null;
 	}
+        
+
+    @Override
+    public ResultSet getLibraryCards() {
+        try{
+            Connection connection = BibliothequeDAO.getConnection();
+            java.sql.Statement statement = connection.createStatement();
+            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subcription, l.active FROM Account a JOIN librarycard l WHERE l.account_id = a.id;";
+            return statement.executeQuery(query);
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }
