@@ -9,16 +9,16 @@ public class BookItem {
 	private String barcode;
 	private boolean status;
 	
-	private String dateCode() {
+    private String getCurrentTimeStamp() {
 	    LocalDateTime today = LocalDateTime.now();
-	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-	    String code = today.format(formatter);
-	    return code;
-	}
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSS");
+	    String formattedDate = today.format(formatter);
+	    return formattedDate;
+    }
 
 	public BookItem(int bookISBN) {
 		this.bookISBN = bookISBN;
-		this.barcode = dateCode();
+		this.barcode = getCurrentTimeStamp();
 		this.id=0;
 		this.status=false;
 	}

@@ -4,7 +4,7 @@
  */
 package Services;
 
-import Entities.Account;
+import BARCODE.Barcode_Image;
 import Entities.BookItem;
 import Interfaces.BookItemDAOInterface;
 import java.sql.Connection;
@@ -12,8 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -22,23 +20,21 @@ import java.util.ArrayList;
  */
 public class BookItemService implements BookItemDAOInterface{
     
-    private String getCurrentTimeStamp() {
-	    LocalDateTime today = LocalDateTime.now();
-	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSS");
-	    String formattedDate = today.format(formatter);
-	    return formattedDate;
-    }
+
     
     @Override
     public void addBookItem(int isbn) {
         try {
             Connection connection = BibliothequeDAO.getConnection();
+            BookItem bi = new BookItem(isbn);
             String INSERT_BOOKITEM_SQL = "INSERT INTO bookitem (isbn_book, barcode, status) VALUES (?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(INSERT_BOOKITEM_SQL);
-            statement.setInt(1, isbn);
-            statement.setString(2, getCurrentTimeStamp());
-            statement.setBoolean(3, false);
+            statement.setInt(1, bi.getBookISBN());
+            statement.setString(2, bi.getBarcode());
+            statement.setBoolean(3, bi.getStatus());
             int affectedRows = statement.executeUpdate();
+            if (affectedRows==1)
+                Barcode_Image.createImage(bi.getBarcode()+".png", bi.getBarcode());
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
