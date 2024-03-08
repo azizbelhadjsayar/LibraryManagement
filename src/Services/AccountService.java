@@ -217,5 +217,70 @@ public class AccountService implements AccountDAOInterface {
 		}
             return null;
         }
+
+    @Override
+    public ArrayList<Account> getAllMembers() {
+        try {
+            ArrayList<Account> members = new ArrayList<Account>();
+            Connection connection = BibliothequeDAO.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from account where lower(role)='librarian'");
+            while(rs.next()) {
+                 Account a = new Account(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+                 members.add(a);
+            }
+            return members;
+        }
+        catch(SQLException e) {
+                e.printStackTrace();
+        }
+        catch(RuntimeException e) {
+                e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public ArrayList<Account> searchAccountByUsername(String typedUsername) {
+        try {
+            ArrayList<Account> members = new ArrayList<Account>();
+            Connection connection = BibliothequeDAO.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from account where lower(username) like '%"+typedUsername+"%'");
+            while(rs.next()) {
+                 Account a = new Account(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+                 members.add(a);
+            }
+            return members;
+        }
+        catch(SQLException e) {
+                e.printStackTrace();
+        }
+        catch(RuntimeException e) {
+                e.printStackTrace();
+        }
+        return null;
+    }
+    
+    
+    public ArrayList<Account> searchAccountByEmail(String typedEmail) {
+        try {
+            ArrayList<Account> members = new ArrayList<Account>();
+            Connection connection = BibliothequeDAO.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from account where lower(email) like '%"+typedEmail+"%'");
+            while(rs.next()) {
+                 Account a = new Account(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+                 members.add(a);
+            }
+            return members;
+        }
+        catch(SQLException e) {
+                e.printStackTrace();
+        }
+        catch(RuntimeException e) {
+                e.printStackTrace();
+        }
+        return null;
+    }
 	
 }

@@ -1,5 +1,6 @@
 package Interfaces;
 import Entities.Account;
+import java.util.ArrayList;
 
 public interface AccountDAOInterface {
 	boolean insertAccount (Account a);
@@ -9,4 +10,5 @@ public interface AccountDAOInterface {
 	boolean deleteAccount(int id);
 	Account checkAccount(String email, String password);
 	boolean updateAccount();
+        ArrayList<Account> getAllMembers();
 }

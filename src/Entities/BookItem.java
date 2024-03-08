@@ -11,7 +11,7 @@ public class BookItem {
 	
 	private String dateCode() {
 	    LocalDateTime today = LocalDateTime.now();
-	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmmssSSSSS");
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 	    String code = today.format(formatter);
 	    return code;
 	}

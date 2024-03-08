@@ -6,6 +6,7 @@ package Services;
 
 
 import Entities.Book;
+import Entities.BookItem;
 import Interfaces.BookDAOInterface;
 import java.sql.Statement;
 import static java.lang.Thread.sleep;
@@ -13,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 /**
  *
  * @author LENOVO
@@ -65,4 +67,17 @@ public class BookService implements BookDAOInterface {
         return null;
     }
     
+    public String searchTitleByISBN(int isbn) {
+        try {
+            Connection connection = BibliothequeDAO.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select title from book where isbn="+isbn+";");
+            while(rs.next()) {
+                 return rs.getString(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
