@@ -56,14 +56,18 @@ public class AccountService implements AccountDAOInterface {
 	public Account getAccountbyEmail(String email) {
 		try {
 			Connection connection = BibliothequeDAO.getConnection();
-			String GetAccountEmailQuery = "SELECT * from account where email ='?';";
+			String GetAccountEmailQuery = "SELECT * from account where email = ? ;";
 			PreparedStatement statement= connection.prepareStatement(GetAccountEmailQuery);
+                        email="'"+email+"'";
 			statement.setString(1, email);
 			ResultSet rs = statement.executeQuery();
-			if(rs != null) {
-				return new Account(rs.getInt(1),rs.getString(2)
+			while(rs.next()) {
+                                Account ac = new Account(rs.getInt(1),rs.getString(2)
 				,rs.getString(3), rs.getString(4)
 				,rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+                                
+				System.out.println(ac.toString());
+                                return ac;
 			}
 		}
 		catch(SQLException e) {
