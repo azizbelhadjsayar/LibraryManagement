@@ -29,23 +29,25 @@ public class AccountService implements AccountDAOInterface {
 	@Override
 	public boolean insertAccount(Account a) {
 		try {
-			Connection connection = BibliothequeDAO.getConnection();
-			String INSERT_USER_SQL = "INSERT INTO account (username,password,email, role, dateofcreation) VALUES (?, ?, ?, ?, ?)";
-			PreparedStatement statement = connection.prepareStatement(INSERT_USER_SQL);
-	        statement.setString(1, a.getUsername());
-	        statement.setString(2, a.getPassword());
-	        statement.setString(3, a.getEmail());
-	        statement.setString(4, a.getRole());
-	        statement.setString(5, a.getDateOfCreation());
-	        int affectedRows = statement.executeUpdate();
-	        statement.close();
-	        if(affectedRows==1) {
-	        	LibraryCardService lcs = new LibraryCardService();
-	        	lcs.insertLibraryCard(a);
-		        return true;
+                    Connection connection = BibliothequeDAO.getConnection();
+                    String INSERT_USER_SQL = "INSERT INTO account (username,password,email, role, dateofcreation, question, response) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    PreparedStatement statement = connection.prepareStatement(INSERT_USER_SQL);
+                    statement.setString(1, a.getUsername());
+                    statement.setString(2, a.getPassword());
+                    statement.setString(3, a.getEmail());
+                    statement.setString(4, a.getRole());
+                    statement.setString(5, a.getDateOfCreation());
+                    statement.setString(6, a.getQuestion());
+                    statement.setString(7, a.getAnswer());
+                    int affectedRows = statement.executeUpdate();
+                    statement.close();
+                    if(affectedRows==1) {
+                    LibraryCardService lcs = new LibraryCardService();
+                    lcs.insertLibraryCard(a);
+                    return true;
 	        }
 		} catch(SQLException e) {
-			e.printStackTrace();
+                    e.printStackTrace();
 		}
 		return false;
 	}
@@ -61,7 +63,7 @@ public class AccountService implements AccountDAOInterface {
 			if(rs != null) {
 				return new Account(rs.getInt(1),rs.getString(2)
 				,rs.getString(3), rs.getString(4)
-				,rs.getString(5), rs.getString(6));
+				,rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
 			}
 		}
 		catch(SQLException e) {
@@ -84,7 +86,7 @@ public class AccountService implements AccountDAOInterface {
 			if(rs != null) {
 				return new Account(rs.getInt(1),rs.getString(2)
 				,rs.getString(3), rs.getString(4)
-				,rs.getString(5), rs.getString(6));
+				,rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
 			}
 		}
 		catch(SQLException e) {
@@ -103,7 +105,7 @@ public class AccountService implements AccountDAOInterface {
 			Statement st = connection.createStatement();
 			ResultSet rs = st.executeQuery("select * from account where username ='"+username+"'");
 			if(rs != null) {
-				return new Account(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+				return new Account(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
 			}
 		}
 		catch(SQLException e) {
@@ -145,7 +147,7 @@ public class AccountService implements AccountDAOInterface {
 			ResultSet rs = st.executeQuery("select * from account where email ='"+email+"'");
                         password = AccountService.hashPassword(password);
 			while(rs.next()) {
-				ac = new Account(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+				ac = new Account(rs.getInt(1),rs.getString(2),rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
 				if(ac.getPassword().equals(password)) return ac;
 			}
                         return null;

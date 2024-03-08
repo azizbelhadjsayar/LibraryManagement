@@ -224,7 +224,8 @@ public class Register extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        pack();
+        setSize(new java.awt.Dimension(564, 510));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
@@ -262,13 +263,27 @@ public class Register extends javax.swing.JFrame {
         
         
         if(!Pattern.compile(emailRegex).matcher(email).matches()){
-            JOptionPane.showMessageDialog(rootPane, "Invalid email syntax");
+            JOptionPane.showMessageDialog(rootPane, "Invalid email syntax", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
-        Account newAccount = new Account(username, password, email, Access.MEMBER);
+        Account newAccount = new Account(username, password, email, Access.LIBRARIAN, question, answer);
+        AccountService as = new AccountService();
         
-        
-        
+        if(as.insertAccount(newAccount)){
+            this.setVisible(false);
+            if(newAccount.getRole().toLowerCase().equals("librarian")){
+                LibrarianMenu librarianMenu = new LibrarianMenu();
+                librarianMenu.setVisible(true);
+            }
+            else if(newAccount.getRole().toLowerCase().equals("member")){
+                this.setVisible(false);
+                MemberMenu memberMenu = new MemberMenu();
+                memberMenu.setVisible(true);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(rootPane, "Problem occured with the account creation", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
     }//GEN-LAST:event_createButtonActionPerformed
 

@@ -14,15 +14,19 @@ public class Account {
 	private String password;
 	private String email;
 	private String role;
+        private String question;
+        private String answer;
 	private String dateOfCreation;
 	
 
-	public Account(String username, String password, String email, Access role) {
+	public Account(String username, String password, String email, Access role, String question, String answer) {
 
 		this.username = username;
 		this.password = AccountService.hashPassword(password);
 		this.email = email;
 		this.role = role.name();
+                this.question = question;
+                this.answer = answer;
 		
 	    LocalDateTime today = LocalDateTime.now();
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -31,13 +35,15 @@ public class Account {
 		this.dateOfCreation = formattedDate;
 	}
 	
-	public Account(int id, String username, String password, String email, String role, String dateOfCreation) {
+	public Account(int id, String username, String password, String email, String role, String dateOfCreation, String question, String answer) {
 		this.id=id;
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.role = role;
 		this.dateOfCreation = dateOfCreation;
+                this.question = question;
+                this.answer = answer;
 	}
 	
 	public int getId() {
@@ -76,11 +82,27 @@ public class Account {
 	public void setDateOfCreation(String dateOfCreation) {
 		this.dateOfCreation = dateOfCreation;
 	}
+        	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
 
 	@Override
 	public String toString() {
 		return "Account [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
-				+ ", role=" + role + ", dateOfCreation=" + dateOfCreation + "]";
+				+ ", role=" + role + ", dateOfCreation=" + dateOfCreation + ", question=" + question + ", answer="
+				+ answer + "]";
 	}
 
 }
