@@ -9,7 +9,7 @@ import org.krysalis.barcode4j.output.*;
 
 public class Barcode_Image {
 	
-	public static void createImage(String image_name,String myString)  {
+	public static void createImage(String image_name,String myString, String folder)  {
 		try {
 		Code128Bean code128 = new Code128Bean();
 		code128.setHeight(15f);
@@ -23,7 +23,7 @@ public class Barcode_Image {
 		canvas.finish();
 
 		//write to png file
-		FileOutputStream fos = new FileOutputStream("src/bookItemsBarcodes/"+image_name);
+		FileOutputStream fos = new FileOutputStream("src/"+folder+"/"+image_name);
 		fos.write(baos.toByteArray());
 		fos.flush();
 		fos.close();

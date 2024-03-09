@@ -14,6 +14,6 @@ public class BIBLIO {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new newBook().setVisible(true);
+        new Login().setVisible(true);
     }
 }

@@ -34,7 +34,7 @@ public class BookItemService implements BookItemDAOInterface{
             statement.setBoolean(3, bi.getStatus());
             int affectedRows = statement.executeUpdate();
             if (affectedRows==1)
-                Barcode_Image.createImage(bi.getBarcode()+".png", bi.getBarcode());
+                Barcode_Image.createImage(bi.getBarcode()+".png", bi.getBarcode(), "bookItemsBarcodes");
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();

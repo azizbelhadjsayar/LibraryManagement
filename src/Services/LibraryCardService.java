@@ -1,5 +1,6 @@
 package Services;
 
+import BARCODE.Barcode_Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +10,9 @@ import Entities.Account;
 import Entities.LibraryCard;
 import Interfaces.LibraryCardDAOInterface;
 import java.beans.Statement;
+import static java.lang.Thread.sleep;
 import java.util.Vector;
+import mailtest.mailing;
 
 public class LibraryCardService implements LibraryCardDAOInterface{
 
@@ -25,8 +28,11 @@ public class LibraryCardService implements LibraryCardDAOInterface{
 			statement.setBoolean(2, newLibraryCard.isActive());
                        	statement.setInt(3, id);
                         int affectedRows = statement.executeUpdate();
+                        Barcode_Image.createImage(newLibraryCard.getBarcode()+".png", newLibraryCard.getBarcode(), "libraryCardsBarcodes");
+                        sleep(1000);
+                        AccountService as = new AccountService();                  
+                        mailing.EmailSender("newAccount",as.getAccountbyId(id).getEmail(), "src/libraryCardsBarcodes/"+newLibraryCard.getBarcode()+".png");
                         statement.close();
-
 			return true;
 		}
 		catch(Exception ex) {
