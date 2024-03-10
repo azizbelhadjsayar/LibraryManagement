@@ -80,4 +80,19 @@ public class BookService implements BookDAOInterface {
         }
         return null;
     }
+
+    @Override
+    public Book getBookbyISBN(int isbn) {
+        try {
+            Connection connection = BibliothequeDAO.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from book where isbn="+isbn+";");
+            while(rs.next()) {
+                 return new Book(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getString(4),rs.getInt(5), rs.getInt(6), rs.getDouble(7));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

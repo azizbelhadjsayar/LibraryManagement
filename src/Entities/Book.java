@@ -27,6 +27,16 @@ public class Book {
         this.price=pr;
     }
     
+    public Book(int isbn, String t, int author, String lang, int nbp, int nbi, double pr) {
+        this.ISBN=isbn;
+        this.title=t;
+        this.authorID=author;
+        this.language=lang;
+        this.nbPages=nbp;
+        this.nbItems=nbi;
+        this.price=pr;
+    }
+    
     public double getPrice() {
 	return price;
     }

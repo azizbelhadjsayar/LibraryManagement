@@ -3,16 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package Interfaces;
-
-import Entities.Author;
-import java.util.ArrayList;
-
+import Entities.Account;
+import Entities.BookItem;
 /**
  *
  * @author LENOVO
  */
-public interface AuthorDAOInterface {
-    ArrayList<Author> getAllAuthors();
-    boolean addAuthor(Author au);
-    Author getAuthorbyID(int id);
+public interface BookLendingDAOInterface {
+    Boolean addBookLending(int days, Account a, BookItem bi);
 }

@@ -31,7 +31,7 @@ public class LibraryCardService implements LibraryCardDAOInterface{
                         Barcode_Image.createImage(newLibraryCard.getBarcode()+".png", newLibraryCard.getBarcode(), "libraryCardsBarcodes");
                         sleep(1000);
                         AccountService as = new AccountService();                  
-                        mailing.EmailSender("newAccount",as.getAccountbyId(id).getEmail(), "src/libraryCardsBarcodes/"+newLibraryCard.getBarcode()+".png");
+                        mailing.NewAccountEmailSender(as.getAccountbyId(id).getEmail(), newLibraryCard.getBarcode()+".png");
                         statement.close();
 			return true;
 		}

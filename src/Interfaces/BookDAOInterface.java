@@ -13,4 +13,5 @@ public interface BookDAOInterface {
     boolean deleteBook(Book b);
     boolean editBook(Book b);
     Book searchBookbyTitle(String title);
+    Book getBookbyISBN(int isbn);
 }

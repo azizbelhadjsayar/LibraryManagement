@@ -92,4 +92,34 @@ public class BookItemService implements BookItemDAOInterface{
         }
         return null;
     }
+    
+    public BookItem getBookItembyBarcode(String barcode) {
+        try {
+            Connection connection = BibliothequeDAO.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from bookitem where barcode='"+barcode+"';");
+            while(rs.next()) {
+                 BookItem b = new BookItem(rs.getInt(1),rs.getInt(2),rs.getString(3), rs.getBoolean(4));
+                 return b;
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public boolean setUnavailableBookItem(String barcode) {
+        try {
+            Connection connection = BibliothequeDAO.getConnection();
+            String updateQuery = "UPDATE bookitem SET status = true WHERE barcode = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+            preparedStatement.setString(1, barcode);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected==1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

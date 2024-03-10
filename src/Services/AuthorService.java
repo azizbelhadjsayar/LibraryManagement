@@ -61,5 +61,24 @@ public class AuthorService implements AuthorDAOInterface{
         }
         return false;
     }
+
+    @Override
+    public Author getAuthorbyID(int id) {
+        try {
+                Connection connection = BibliothequeDAO.getConnection();
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery("select * from author where id="+id);
+                while(rs.next()) {
+                        return new Author(rs.getInt(1), rs.getString(2));
+                }
+        }
+        catch(SQLException e) {
+                e.printStackTrace();
+        }
+        catch(RuntimeException e) {
+                e.printStackTrace();
+        }
+        return null;
+    }
     
 }
