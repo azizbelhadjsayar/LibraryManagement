@@ -12,7 +12,7 @@ import Interfaces.LibraryCardDAOInterface;
 import java.beans.Statement;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
-import mailtest.mailing;
+import MailSender.mailing;
 
 public class LibraryCardService implements LibraryCardDAOInterface{
 

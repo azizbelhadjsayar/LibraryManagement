@@ -1,4 +1,4 @@
-package mailtest;
+package MailSender;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.*;
@@ -35,7 +35,7 @@ public static void EmailSender(String type, String receiver, String imagePath) {
         message.setFrom(new InternetAddress("bibliotunisie@gmail.com"));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
         if(type.toLowerCase().equals("newaccount"))
-        	message.setSubject("ACCOUNT CREATION BIBLIOTHEQUE TUNISIE");
+        	message.setSubject("Welcome to our Library System - Your New Account Information");
         else if (type.toLowerCase().equals("newlending"))
         	message.setSubject("NEW BOOK LENDING");
 
@@ -45,9 +45,14 @@ public static void EmailSender(String type, String receiver, String imagePath) {
 
         // Text part
         BodyPart textPart = new MimeBodyPart();
-        textPart.setText("This is the message body");
+        textPart.setText("Congratulations! Your account has been successfully created in our library system at \"BIBLIOTHEQUE TUNISIE\".\n\n"
+                        + "Thank you for joining our library community. With your new account, you can now enjoy the benefits of our extensive collection of books and resources.\n"
+                        + "Attached to this email, you will find an image of your unique library barcode. Please make sure to keep it safe, as you may need it for library transactions.\n"
+                        + "If you have any questions or need assistance, feel free to reach out to our support team.\n"
+                        + "Happy reading!\n\n"
+                        + "Best regards,\n"
+                        + "BIBLIOTHEQUE TUNISIE");
         multipart.addBodyPart(textPart);
-
         MimeBodyPart imagePart = new MimeBodyPart();
         String filePath = imagePath;
         FileDataSource fileDataSource = new FileDataSource(filePath);
