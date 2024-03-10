@@ -7,6 +7,7 @@ package biblio;
 import Services.LibraryCardService;
 import Services.LibraryCardService.Row;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -76,7 +77,7 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         libraryCardsTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        modifyCardButton = new javax.swing.JButton();
         idSearchButton = new javax.swing.JButton();
         activeComboBox = new javax.swing.JComboBox<>();
         jButton3 = new javax.swing.JButton();
@@ -114,9 +115,19 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Modify Card");
+        modifyCardButton.setText("Modify Card");
+        modifyCardButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modifyCardButtonActionPerformed(evt);
+            }
+        });
 
         idSearchButton.setText("Search by ID");
+        idSearchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                idSearchButtonMouseClicked(evt);
+            }
+        });
         idSearchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idSearchButtonActionPerformed(evt);
@@ -162,7 +173,7 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton4)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)
+                        .addComponent(modifyCardButton)
                         .addGap(23, 23, 23)
                         .addComponent(jButton3)))
                 .addContainerGap())
@@ -176,7 +187,7 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
                 .addComponent(idSearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(modifyCardButton)
                     .addComponent(idSearchButton)
                     .addComponent(activeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3)
@@ -209,6 +220,24 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
             default -> libraryCardsTable(lCS.getLibraryCards());       
         }
     }//GEN-LAST:event_activeComboBoxActionPerformed
+
+    private void idSearchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_idSearchButtonMouseClicked
+        try{
+            Integer id = Integer.valueOf(idSearchTextField.getText());
+            ArrayList<Row> liste = new ArrayList<>();
+            LibraryCardService lCS = new LibraryCardService();
+            liste.add(lCS.getInfoById(id));
+            libraryCardsTable(liste);
+        }
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_idSearchButtonMouseClicked
+
+    private void modifyCardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyCardButtonActionPerformed
+        this.setVisible(false);
+        new Subscription().setVisible(true);
+    }//GEN-LAST:event_modifyCardButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -249,11 +278,11 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> activeComboBox;
     private javax.swing.JButton idSearchButton;
     private javax.swing.JTextField idSearchTextField;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable libraryCardsTable;
+    private javax.swing.JButton modifyCardButton;
     // End of variables declaration//GEN-END:variables
 }

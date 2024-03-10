@@ -13,6 +13,7 @@ public interface LibraryCardDAOInterface<T> {
         ArrayList<T> getNonActiveLibraryCards();
         T getInfoById(int id);
         T getInfoByEmail(String email);
+        boolean updateSubscription(int id, String date);
         
 	
 }

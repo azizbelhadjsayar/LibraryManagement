@@ -4,6 +4,13 @@
  */
 package biblio;
 
+import Services.LibraryCardService;
+import Services.LibraryCardService.Row;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author bchir
@@ -27,23 +34,28 @@ public class Subscription extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jCalendar1 = new com.toedter.calendar.JCalendar();
+        EndOfSubscriptionCalendar = new com.toedter.calendar.JCalendar();
         jScrollPane1 = new javax.swing.JScrollPane();
         libraryCardsTable = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        emailTextField = new javax.swing.JTextField();
+        searchEmailButton = new javax.swing.JButton();
+        modifyButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel3.setText("Email");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/biblio/assets/back-arrow .png"))); // NOI18N
-        jButton1.setText("Back");
+        backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/biblio/assets/back-arrow .png"))); // NOI18N
+        backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Scan card");
 
@@ -52,7 +64,7 @@ public class Subscription extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Account ID", "Email", "Username", "Barcode", "Issued At", "End of subscription", "Active"
+                "Account ID", "Email", "Username", "Issued At", "End of subscription", "Active"
             }
         ));
         jScrollPane1.setViewportView(libraryCardsTable);
@@ -60,15 +72,25 @@ public class Subscription extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel4.setText("End of subscription");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        emailTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                emailTextFieldActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Search");
+        searchEmailButton.setText("Search");
+        searchEmailButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchEmailButtonActionPerformed(evt);
+            }
+        });
 
-        jButton5.setText("Modify");
+        modifyButton.setText("Modify");
+        modifyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modifyButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -82,20 +104,20 @@ public class Subscription extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(358, 358, 358)
-                                .addComponent(jButton1))
+                                .addComponent(backButton))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton4)
+                                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(searchEmailButton)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jButton3)
                                         .addGap(28, 28, 28)
-                                        .addComponent(jButton5)))
+                                        .addComponent(modifyButton)))
                                 .addGap(36, 36, 36)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
-                                    .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(EndOfSubscriptionCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 12, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -109,30 +131,52 @@ public class Subscription extends javax.swing.JFrame {
                         .addGap(60, 60, 60)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4)
+                        .addComponent(searchEmailButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3)
-                            .addComponent(jButton5))
+                            .addComponent(modifyButton))
                         .addGap(55, 55, 55))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(EndOfSubscriptionCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
+                        .addComponent(backButton)
                         .addGap(17, 17, 17))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void emailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_emailTextFieldActionPerformed
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        this.setVisible(false);
+        new LibraryCardStatistics().setVisible(true);
+    }//GEN-LAST:event_backButtonActionPerformed
+
+    private void searchEmailButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchEmailButtonActionPerformed
+        String email = emailTextField.getText();
+        LibraryCardService lCS = new LibraryCardService();
+        ArrayList<Row> liste = new ArrayList<>();
+        liste.add(lCS.getInfoByEmail(email));
+        libraryCardsTable(liste);
+        
+    }//GEN-LAST:event_searchEmailButtonActionPerformed
+
+    private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+        String date = formatter.format(EndOfSubscriptionCalendar.getDate());
+        LibraryCardService lCS = new LibraryCardService();
+        lCS.updateSubscription(lCS.getInfoByEmail(emailTextField.getText()).id(), date);
+        
+    }//GEN-LAST:event_modifyButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -170,15 +214,36 @@ public class Subscription extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private com.toedter.calendar.JCalendar EndOfSubscriptionCalendar;
+    private javax.swing.JButton backButton;
+    private javax.swing.JTextField emailTextField;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable libraryCardsTable;
+    private javax.swing.JButton modifyButton;
+    private javax.swing.JButton searchEmailButton;
     // End of variables declaration//GEN-END:variables
+
+    private void libraryCardsTable(ArrayList<Row> liste) {
+                try{
+            
+            DefaultTableModel model = (DefaultTableModel)libraryCardsTable.getModel();
+            model.setRowCount(0);
+            Object rowData[] = new Object[6];
+            for(Row r : liste){
+                rowData[0] = r.id();
+                rowData[1] = r.email();
+                rowData[2] = r.username();
+                rowData[3] = r.issuedAt();
+                rowData[4] = r.dateEndSubscription();
+                rowData[5] = r.active();
+                model.addRow(rowData);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }

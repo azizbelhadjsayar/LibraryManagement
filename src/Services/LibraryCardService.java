@@ -106,7 +106,7 @@ public class LibraryCardService implements LibraryCardDAOInterface{
             String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.active FROM Account a JOIN librarycard l ON (l.account_id = a.id) WHERE a.id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet rs = statement.executeQuery();
             Row newRow = null;
             while(rs.next()){
                 newRow = new Row(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getBoolean(6));
@@ -121,8 +121,42 @@ public class LibraryCardService implements LibraryCardDAOInterface{
     }
 
     @Override
-    public Object getInfoByEmail(String email) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Row getInfoByEmail(String email) {
+                try{
+            System.out.println(email);
+            Connection connection = BibliothequeDAO.getConnection();
+            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.active FROM Account a JOIN librarycard l ON (l.account_id = a.id) WHERE a.email = ?;";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, email);
+            ResultSet rs = statement.executeQuery();
+            Row newRow = null;
+            while(rs.next()){
+                newRow = new Row(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getBoolean(6));
+            }
+            return newRow;
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean updateSubscription(int id, String date) {
+        try{
+            Connection connection = BibliothequeDAO.getConnection();
+            String query="UPDATE librarycard SET date_end_subscription = ? WHERE account_id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, date);
+            statement.setInt(2, id);
+            int affectedRows = statement.executeUpdate();
+            if(affectedRows > 0) return true;
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return false;
+        
     }
         
     public record Row(int id, String email, String username, String issuedAt, String dateEndSubscription, boolean active){
