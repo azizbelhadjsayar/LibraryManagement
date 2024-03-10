@@ -145,7 +145,7 @@ public class LibraryCardService implements LibraryCardDAOInterface{
     public boolean updateSubscription(int id, String date) {
         try{
             Connection connection = BibliothequeDAO.getConnection();
-            String query="UPDATE librarycard SET date_end_subscription = ? WHERE account_id = ?";
+            String query="UPDATE librarycard SET date_end_subscription = ?, active = true WHERE account_id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, date);
             statement.setInt(2, id);

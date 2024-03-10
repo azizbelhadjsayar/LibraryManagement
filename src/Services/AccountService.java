@@ -282,5 +282,9 @@ public class AccountService implements AccountDAOInterface {
         }
         return null;
     }
+    
+    public boolean setAccountActive(Account a) {
+        return false;
+    }
 	
 }
