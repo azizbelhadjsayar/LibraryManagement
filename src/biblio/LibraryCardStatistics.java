@@ -22,10 +22,31 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
         initComponents();
         libraryCardsTable();
     }
-
+    public void libraryCardsTable(ArrayList<Row> liste){
+                try{
+            
+            DefaultTableModel model = (DefaultTableModel)libraryCardsTable.getModel();
+            model.setRowCount(0);
+            Object rowData[] = new Object[6];
+            for(Row r : liste){
+                rowData[0] = r.id();
+                rowData[1] = r.email();
+                rowData[2] = r.username();
+                rowData[3] = r.issuedAt();
+                rowData[4] = r.dateEndSubscription();
+                rowData[5] = r.active();
+                model.addRow(rowData);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        
+    }
     public void libraryCardsTable(){
         try{
             DefaultTableModel model = (DefaultTableModel)libraryCardsTable.getModel();
+            model.setRowCount(0);
             LibraryCardService lCS = new LibraryCardService();
             ArrayList<Row> rows = lCS.getLibraryCards();
             Object rowData[] = new Object[6];
@@ -56,10 +77,11 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         libraryCardsTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        idSearchButton = new javax.swing.JButton();
+        activeComboBox = new javax.swing.JComboBox<>();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        idSearchTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,14 +116,24 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
 
         jButton1.setText("Modify Card");
 
-        jButton2.setText("Search by ID");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        idSearchButton.setText("Search by ID");
+        idSearchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                idSearchButtonActionPerformed(evt);
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Non Active", "AlI" }));
+        activeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Non Active", "AlI" }));
+        activeComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                activeComboBoxMouseClicked(evt);
+            }
+        });
+        activeComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                activeComboBoxActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/biblio/assets/back-arrow .png"))); // NOI18N
         jButton3.setText("Back");
@@ -122,9 +154,11 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(idSearchTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(idSearchButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(activeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton4)
                         .addGap(18, 18, 18)
@@ -138,11 +172,13 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65)
+                .addGap(40, 40, 40)
+                .addComponent(idSearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idSearchButton)
+                    .addComponent(activeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3)
                     .addComponent(jButton4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -151,13 +187,28 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void idSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idSearchButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_idSearchButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void activeComboBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activeComboBoxMouseClicked
+       
+    }//GEN-LAST:event_activeComboBoxMouseClicked
+
+    private void activeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_activeComboBoxActionPerformed
+        String activeState = (String)activeComboBox.getSelectedItem();
+        LibraryCardService lCS = new LibraryCardService();
+        switch(activeState){
+            case "Active" -> libraryCardsTable(lCS.getActiveLibraryCards());
+            case "Non Active" -> libraryCardsTable(lCS.getNonActiveLibraryCards());
+            case "All" -> libraryCardsTable(lCS.getLibraryCards());
+            default -> libraryCardsTable(lCS.getLibraryCards());       
+        }
+    }//GEN-LAST:event_activeComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -195,11 +246,12 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> activeComboBox;
+    private javax.swing.JButton idSearchButton;
+    private javax.swing.JTextField idSearchTextField;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable libraryCardsTable;

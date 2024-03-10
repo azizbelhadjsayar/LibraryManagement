@@ -58,6 +58,72 @@ public class LibraryCardService implements LibraryCardDAOInterface{
 		}
 		return null;
 	}
+
+    @Override
+    public ArrayList getActiveLibraryCards() {
+        try{
+            Connection connection = BibliothequeDAO.getConnection();
+            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.active FROM Account a JOIN librarycard l ON (l.account_id = a.id) WHERE NOW() < l.date_end_subscription;";
+            java.sql.Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            ArrayList<Row> rows = new ArrayList<>();
+            while(rs.next()){
+                Row newRow = new Row(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getBoolean(6));
+                rows.add(newRow);
+            }
+            return rows;
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public ArrayList getNonActiveLibraryCards() {
+        try{
+            Connection connection = BibliothequeDAO.getConnection();
+            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.active FROM Account a JOIN librarycard l ON (l.account_id = a.id) WHERE NOW() >= l.date_end_subscription;";
+            java.sql.Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            ArrayList<Row> rows = new ArrayList<>();
+            while(rs.next()){
+                Row newRow = new Row(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getBoolean(6));
+                rows.add(newRow);
+            }
+            return rows;
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Row getInfoById(int id) {
+        try{
+            Connection connection = BibliothequeDAO.getConnection();
+            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.active FROM Account a JOIN librarycard l ON (l.account_id = a.id) WHERE a.id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery(query);
+            Row newRow = null;
+            while(rs.next()){
+                newRow = new Row(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getBoolean(6));
+            }
+            return newRow;
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return null;
+        
+    }
+
+    @Override
+    public Object getInfoByEmail(String email) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
         
     public record Row(int id, String email, String username, String issuedAt, String dateEndSubscription, boolean active){
         

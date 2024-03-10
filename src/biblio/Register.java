@@ -105,6 +105,11 @@ public class Register extends javax.swing.JFrame {
 
         secretQuesComboBox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         secretQuesComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "What is your favorite fiction character ?", "what month did you get married ?", "What town was your mother born in ?", "what is your oldest cousin's name ?" }));
+        secretQuesComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                secretQuesComboBoxActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Secret Question");
@@ -180,13 +185,12 @@ public class Register extends javax.swing.JFrame {
                     .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(37, 37, 37)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(randomButton)
-                        .addGap(9, 9, 9)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(randomButton)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)))
+                .addGap(9, 9, 9)
                 .addComponent(passwordCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -295,6 +299,10 @@ public class Register extends javax.swing.JFrame {
     private void randomButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_randomButtonMouseClicked
         passwordField.setText(AccountService.generateRandomPassword(20));
     }//GEN-LAST:event_randomButtonMouseClicked
+
+    private void secretQuesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_secretQuesComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_secretQuesComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
