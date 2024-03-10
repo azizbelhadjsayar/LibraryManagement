@@ -2,13 +2,13 @@ package Interfaces;
 
 import Entities.Account;
 import Entities.LibraryCard;
-import java.util.Vector;
+import java.util.ArrayList;
 
-public interface LibraryCardDAOInterface {
+public interface LibraryCardDAOInterface<T> {
 	
 	boolean insertLibraryCard(int id);
 	LibraryCard getLibraryCardByAccount(Account a);
-        java.sql.ResultSet getLibraryCards();
+        ArrayList<T> getLibraryCards();
 	
         
 	

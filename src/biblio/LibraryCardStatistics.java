@@ -5,7 +5,9 @@
 package biblio;
 
 import Services.LibraryCardService;
-import net.proteanit.sql.DbUtils;
+import Services.LibraryCardService.Row;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,12 +20,24 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
      */
     public LibraryCardStatistics() {
         initComponents();
+        libraryCardsTable();
     }
 
     public void libraryCardsTable(){
         try{
+            DefaultTableModel model = (DefaultTableModel)libraryCardsTable.getModel();
             LibraryCardService lCS = new LibraryCardService();
-            libraryCardsTable.setModel(DbUtils.resultSetToTableModel(lCS.getLibraryCards()));
+            ArrayList<Row> rows = lCS.getLibraryCards();
+            Object rowData[] = new Object[6];
+            for(Row r : rows){
+                rowData[0] = r.id();
+                rowData[1] = r.email();
+                rowData[2] = r.username();
+                rowData[3] = r.issuedAt();
+                rowData[4] = r.dateEndSubscription();
+                rowData[5] = r.active();
+                model.addRow(rowData);
+            }
         }
         catch(Exception e){
             e.printStackTrace();
@@ -53,10 +67,7 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
 
         libraryCardsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "account_id", "email", "username", "Issued At", "End of subscription", "Active"
@@ -70,7 +81,7 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -113,8 +124,8 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 165, Short.MAX_VALUE)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton4)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)

@@ -11,7 +11,7 @@ import Entities.LibraryCard;
 import Interfaces.LibraryCardDAOInterface;
 import java.beans.Statement;
 import static java.lang.Thread.sleep;
-import java.util.Vector;
+import java.util.ArrayList;
 import mailtest.mailing;
 
 public class LibraryCardService implements LibraryCardDAOInterface{
@@ -59,14 +59,22 @@ public class LibraryCardService implements LibraryCardDAOInterface{
 		return null;
 	}
         
-
+    public record Row(int id, String email, String username, String issuedAt, String dateEndSubscription, boolean active){
+        
+    }
     @Override
-    public ResultSet getLibraryCards() {
+    public ArrayList<Row> getLibraryCards() {
         try{
             Connection connection = BibliothequeDAO.getConnection();
             java.sql.Statement statement = connection.createStatement();
-            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subcription, l.active FROM Account a JOIN librarycard l WHERE l.account_id = a.id;";
-            return statement.executeQuery(query);
+            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.active FROM Account a JOIN librarycard l WHERE l.account_id = a.id;";
+            ResultSet rs = statement.executeQuery(query);
+            ArrayList<Row> rows = new ArrayList<>();
+            while(rs.next()){
+                Row newRow = new Row(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getBoolean(6));
+                rows.add(newRow);
+            }
+            return rows;
         }
         catch(SQLException e){
             e.printStackTrace();
