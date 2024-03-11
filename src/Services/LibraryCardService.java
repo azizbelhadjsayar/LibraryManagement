@@ -63,7 +63,7 @@ public class LibraryCardService implements LibraryCardDAOInterface{
     public ArrayList getActiveLibraryCards() {
         try{
             Connection connection = BibliothequeDAO.getConnection();
-            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.active FROM Account a JOIN librarycard l ON (l.account_id = a.id) WHERE NOW() < l.date_end_subscription;";
+            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.date_end_subscription > NOW() FROM Account a JOIN librarycard l ON (l.account_id = a.id) WHERE NOW() < l.date_end_subscription;";
             java.sql.Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             ArrayList<Row> rows = new ArrayList<>();
@@ -83,7 +83,7 @@ public class LibraryCardService implements LibraryCardDAOInterface{
     public ArrayList getNonActiveLibraryCards() {
         try{
             Connection connection = BibliothequeDAO.getConnection();
-            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.active FROM Account a JOIN librarycard l ON (l.account_id = a.id) WHERE NOW() >= l.date_end_subscription;";
+            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.date_end_subscription > NOW() FROM Account a JOIN librarycard l ON (l.account_id = a.id) WHERE NOW() >= l.date_end_subscription;";
             java.sql.Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             ArrayList<Row> rows = new ArrayList<>();
@@ -125,7 +125,7 @@ public class LibraryCardService implements LibraryCardDAOInterface{
                 try{
             System.out.println(email);
             Connection connection = BibliothequeDAO.getConnection();
-            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.active FROM Account a JOIN librarycard l ON (l.account_id = a.id) WHERE a.email = ?;";
+            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.date_end_subscription > NOW() FROM Account a JOIN librarycard l ON (l.account_id = a.id) WHERE a.email = ?;";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, email);
             ResultSet rs = statement.executeQuery();
@@ -145,7 +145,7 @@ public class LibraryCardService implements LibraryCardDAOInterface{
     public boolean updateSubscription(int id, String date) {
         try{
             Connection connection = BibliothequeDAO.getConnection();
-            String query="UPDATE librarycard SET date_end_subscription = ?, active = true WHERE account_id = ?";
+            String query="UPDATE librarycard SET date_end_subscription = ? WHERE account_id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, date);
             statement.setInt(2, id);
@@ -167,7 +167,7 @@ public class LibraryCardService implements LibraryCardDAOInterface{
         try{
             Connection connection = BibliothequeDAO.getConnection();
             java.sql.Statement statement = connection.createStatement();
-            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.active FROM Account a JOIN librarycard l WHERE l.account_id = a.id;";
+            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.date_end_subscription > NOW() FROM Account a JOIN librarycard l WHERE l.account_id = a.id;";
             ResultSet rs = statement.executeQuery(query);
             ArrayList<Row> rows = new ArrayList<>();
             while(rs.next()){

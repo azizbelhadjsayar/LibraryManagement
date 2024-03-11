@@ -9,6 +9,7 @@ import Services.LibraryCardService.Row;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -162,11 +163,17 @@ public class Subscription extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void searchEmailButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchEmailButtonActionPerformed
-        String email = emailTextField.getText();
-        LibraryCardService lCS = new LibraryCardService();
-        ArrayList<Row> liste = new ArrayList<>();
-        liste.add(lCS.getInfoByEmail(email));
-        libraryCardsTable(liste);
+       try{
+            String email = emailTextField.getText();
+            LibraryCardService lCS = new LibraryCardService();
+            ArrayList<Row> liste = new ArrayList<>();
+            liste.add(lCS.getInfoByEmail(email));
+            libraryCardsTable(liste);
+       }
+       catch(Exception ex){
+           JOptionPane.showMessageDialog(rootPane, "Connection to the database failed !", "Error", JOptionPane.ERROR_MESSAGE);
+       }
+
         
     }//GEN-LAST:event_searchEmailButtonActionPerformed
 
@@ -174,7 +181,12 @@ public class Subscription extends javax.swing.JFrame {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
         String date = formatter.format(EndOfSubscriptionCalendar.getDate());
         LibraryCardService lCS = new LibraryCardService();
-        lCS.updateSubscription(lCS.getInfoByEmail(emailTextField.getText()).id(), date);
+        try{
+            lCS.updateSubscription(lCS.getInfoByEmail(emailTextField.getText()).id(), date);
+        }
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(rootPane, "The modification failed", "Error", JOptionPane.ERROR_MESSAGE );
+        }
         
     }//GEN-LAST:event_modifyButtonActionPerformed
 
