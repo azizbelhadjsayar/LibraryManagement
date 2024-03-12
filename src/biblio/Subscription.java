@@ -178,9 +178,7 @@ public class Subscription extends javax.swing.JFrame {
        }
        catch(Exception ex){
            JOptionPane.showMessageDialog(rootPane, "Connection to the database failed !", "Error", JOptionPane.ERROR_MESSAGE);
-       }
-
-        
+       } 
     }//GEN-LAST:event_searchEmailButtonActionPerformed
 
     private void modifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyButtonActionPerformed
@@ -198,6 +196,14 @@ public class Subscription extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Barcode_Scanner.startScanning();
+     
+       
+
+        // Placez votre logique ici...
+
+
+
+        // Arrête le thread de numérisation
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

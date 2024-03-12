@@ -33,7 +33,8 @@ public class Barcode_Scanner extends JFrame{
     private JLabel cameraScreen;
     private VideoCapture capture;
     private Mat image;
-    
+    private boolean shouldStop = false; // Variable de contrôle pour arrêter le thread
+    private String barcodeResult; // Variable pour stocker le résultat du scan
     
     public Barcode_Scanner() {
         setLayout(null);
@@ -47,13 +48,17 @@ public class Barcode_Scanner extends JFrame{
         setVisible(true);
     }
     
+    public String getBarcodeResult() {
+        return barcodeResult;
+    }
+    
     public void startCamera() {
         capture = new VideoCapture(0);
         image = new Mat();
         byte[] imageData;
         
         ImageIcon icon;
-        while(true) {
+        while(!shouldStop) {
             capture.read(image);
             final MatOfByte buf = new MatOfByte();
             Imgcodecs.imencode(".jpg", image, buf);
@@ -97,13 +102,26 @@ public class Barcode_Scanner extends JFrame{
             Result result = reader.decode(bitmap);
 
             // Show barcode content using JOptionPane
-            JOptionPane.showMessageDialog(null, "Barcode: " + result.getText());
+            //JOptionPane.showMessageDialog(null, "Barcode: " + result.getText());
             //this.setVisible(false);
+            barcodeResult = "Barcode: " + result.getText();
+            shouldStop=true;
+            this.setVisible(false);
         }
         catch (Exception e) {
-            
+            barcodeResult = null;
         }
     }
+    
+    
+    public void stopScanningg() {
+        shouldStop = true;
+    }
+
+    // Méthode pour récupérer le résultat du scan
+
+    
+    
    public static void startScanning () {
        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
        EventQueue.invokeLater(new Runnable() {
