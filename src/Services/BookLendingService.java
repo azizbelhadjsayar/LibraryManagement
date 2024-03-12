@@ -7,13 +7,18 @@ package Services;
 import BARCODE.Barcode_Image;
 import Entities.Account;
 import Entities.BookItem;
+import Entities.Booklending;
 import Interfaces.BookLendingDAOInterface;
 import MailSender.mailing;
 import static java.lang.Thread.sleep;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 /**
  *
@@ -56,5 +61,87 @@ public class BookLendingService implements BookLendingDAOInterface{
             e.printStackTrace();
         }
         return false;
+    }
+    
+    
+    
+    
+    public record Row(int id, String bookitem_barcode, int account_id, Object creation_date, Object due_date , Object return_date){
+        
+    }
+    
+    
+    public ArrayList<Row> getAllBookLendings() {
+        try{
+            Connection connection = BibliothequeDAO.getConnection();
+            java.sql.Statement statement = connection.createStatement();
+            String query = "select * from booklending";
+            ResultSet rs = statement.executeQuery(query);
+            ArrayList<Row> rows = new ArrayList<>();
+            while(rs.next()){
+                Row newRow = new Row(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getTimestamp(4), rs.getTimestamp(5), rs.getTimestamp(6));
+                rows.add(newRow);
+            }
+            return rows;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public ArrayList<Row> getNotReturnedBookLendings() {
+        try{
+            Connection connection = BibliothequeDAO.getConnection();
+            java.sql.Statement statement = connection.createStatement();
+            String query = "select * from booklending where return_date is null";
+            ResultSet rs = statement.executeQuery(query);
+            ArrayList<Row> rows = new ArrayList<>();
+            while(rs.next()){
+                Row newRow = new Row(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getTimestamp(4), rs.getTimestamp(5), rs.getTimestamp(6));
+                rows.add(newRow);
+            }
+            return rows;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    
+     public ArrayList<Row> getReturnedBookLendings() {
+        try{
+            Connection connection = BibliothequeDAO.getConnection();
+            java.sql.Statement statement = connection.createStatement();
+            String query = "select * from booklending where return_date is not null";
+            ResultSet rs = statement.executeQuery(query);
+            ArrayList<Row> rows = new ArrayList<>();
+            while(rs.next()){
+                Row newRow = new Row(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getTimestamp(4), rs.getTimestamp(5), rs.getTimestamp(6));
+                rows.add(newRow);
+            }
+            return rows;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+     
+    public Booklending getNotReturnedBookLendingbyID (int id) {
+        try {
+            Connection connection = BibliothequeDAO.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from booklending where id="+id+";");
+            while(rs.next()) {
+                 Booklending bl = new Booklending(rs.getInt(1),rs.getString(2),rs.getInt(3), rs.getTimestamp(4).toLocalDateTime(), rs.getTimestamp(5).toLocalDateTime());
+                 return bl;
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
