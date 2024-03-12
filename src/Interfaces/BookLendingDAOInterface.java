@@ -11,4 +11,5 @@ import Entities.BookItem;
  */
 public interface BookLendingDAOInterface {
     Boolean addBookLending(int days, Account a, BookItem bi);
+    
 }

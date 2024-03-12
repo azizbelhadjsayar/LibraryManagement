@@ -23,6 +23,7 @@ public class ConfirmReturn extends javax.swing.JFrame {
      */
     public ConfirmReturn(Account a, BookItem bi, Booklending bl) {
         initComponents();
+        
         try {
             String query1 = "select id, username, email from account where id="+a.getId()+";";
             String query2 = "select bi.barcode, b.title, auth.fullname, b.language, b.price from bookitem bi join book b on bi.isbn_book = b.isbn join author auth on b.author_id = auth.id where bi.id="+bi.getId()+";";

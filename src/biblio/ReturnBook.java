@@ -27,6 +27,7 @@ public class ReturnBook extends javax.swing.JFrame {
     
     public void BookLendingsTable(ArrayList<Row> liste){
         try{
+            
             DefaultTableModel model = (DefaultTableModel)lendingsTABLE.getModel();
             model.setRowCount(0);
             Object rowData[] = new Object[6];
