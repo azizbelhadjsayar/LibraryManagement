@@ -4,6 +4,7 @@
  */
 package biblio;
 
+import Barcode.Barcode_Scanner;
 import Services.LibraryCardService;
 import Services.LibraryCardService.Row;
 import java.text.SimpleDateFormat;
@@ -59,6 +60,11 @@ public class Subscription extends javax.swing.JFrame {
         });
 
         jButton3.setText("Scan card");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         libraryCardsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -189,6 +195,10 @@ public class Subscription extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_modifyButtonActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Barcode_Scanner.startScanning();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
