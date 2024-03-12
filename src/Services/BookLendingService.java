@@ -144,4 +144,20 @@ public class BookLendingService implements BookLendingDAOInterface{
         }
         return null;
     }
+    
+        public Booklending BookLendingbyBarcode (String barcode) {
+        try {
+            Connection connection = BibliothequeDAO.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select * from booklending where concat(bookitem_barcode,account_id)='"+barcode+"';");
+            while(rs.next()) {
+                 Booklending bl = new Booklending(rs.getInt(1),rs.getString(2),rs.getInt(3), rs.getTimestamp(4).toLocalDateTime(), rs.getTimestamp(5).toLocalDateTime());
+                 return bl;
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

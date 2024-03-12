@@ -4,11 +4,17 @@
  */
 package biblio;
 
+import Barcode.Barcode_Scanner;
+import Entities.BookItem;
+import Entities.Booklending;
 import Services.AccountService;
 import Services.BookItemService;
 import Services.BookLendingService;
 import Services.BookLendingService.Row;
+import static java.lang.Thread.sleep;
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -58,6 +64,7 @@ public class ReturnBook extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         lendingsTABLE = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -99,21 +106,29 @@ public class ReturnBook extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("SCAN BARCODE");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(226, 226, 226))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
+                .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(activeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 804, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(38, 38, 38))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(206, 206, 206))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 804, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(activeComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(0, 48, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,9 +137,11 @@ public class ReturnBook extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(activeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64))
+                .addGap(65, 65, 65))
         );
 
         pack();
@@ -144,7 +161,6 @@ public class ReturnBook extends javax.swing.JFrame {
     }//GEN-LAST:event_activeComboBoxActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         AccountService AS = new AccountService();
         BookItemService BIS = new BookItemService();
         BookLendingService BLS = new BookLendingService();
@@ -157,6 +173,40 @@ public class ReturnBook extends javax.swing.JFrame {
         ConfirmReturn obj = new ConfirmReturn(AS.getAccountbyId(account_id),BIS.getBookItembyBarcode(barcode_item), BLS.getNotReturnedBookLendingbyID(booklending_id));
         obj.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+            // Simulate a long-running asynchronous task
+            try {
+                Barcode_Scanner.barcodeResult =null;
+                Barcode_Scanner.startScanning();
+                while(true) {
+                    String result = Barcode_Scanner.barcodeResult;
+                    sleep(100);
+                    if (result!=null) {
+                        //traitement ................................
+                        AccountService AS = new AccountService();
+                        BookItemService BIS = new BookItemService();
+                        BookLendingService BLS = new BookLendingService();
+                        Booklending bl = BLS.BookLendingbyBarcode(result);
+                        if(bl!=null) {
+                            this.setVisible(false);
+                            ConfirmReturn obj = new ConfirmReturn(AS.getAccountbyId(bl.getAccount_id()),BIS.getBookItembyBarcode(bl.getBookItem_barcode()), bl);
+                            obj.setVisible(true);   
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null,"NO BOOK LENDING FOUND WITH THIS BARCODE");
+                        }
+                        //...........................................
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,6 +246,7 @@ public class ReturnBook extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> activeComboBox;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable lendingsTABLE;
     // End of variables declaration//GEN-END:variables

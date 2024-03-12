@@ -7,9 +7,13 @@ package biblio;
 import Barcode.Barcode_Scanner;
 import Services.LibraryCardService;
 import Services.LibraryCardService.Row;
+import static java.lang.Thread.sleep;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -195,15 +199,26 @@ public class Subscription extends javax.swing.JFrame {
     }//GEN-LAST:event_modifyButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Barcode_Scanner.startScanning();
-     
-       
-
-        // Placez votre logique ici...
-
-
-
-        // Arrête le thread de numérisation
+        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+            // Simulate a long-running asynchronous task
+            try {
+                Barcode_Scanner.barcodeResult =null;
+                Barcode_Scanner.startScanning();
+                while(true) {
+                    String result = Barcode_Scanner.barcodeResult;
+                    sleep(100);
+                    if (result!=null) {
+                        //traitement ................................
+                        System.out.print(result);
+                        //...........................................
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

@@ -34,7 +34,7 @@ public class Barcode_Scanner extends JFrame{
     private VideoCapture capture;
     private Mat image;
     private boolean shouldStop = false; // Variable de contrôle pour arrêter le thread
-    private String barcodeResult; // Variable pour stocker le résultat du scan
+    public static String barcodeResult; // Variable pour stocker le résultat du scan
     
     public Barcode_Scanner() {
         setLayout(null);
@@ -104,7 +104,7 @@ public class Barcode_Scanner extends JFrame{
             // Show barcode content using JOptionPane
             //JOptionPane.showMessageDialog(null, "Barcode: " + result.getText());
             //this.setVisible(false);
-            barcodeResult = "Barcode: " + result.getText();
+            barcodeResult = result.getText();
             shouldStop=true;
             this.setVisible(false);
         }
