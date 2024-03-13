@@ -160,4 +160,35 @@ public class BookLendingService implements BookLendingDAOInterface{
         }
         return null;
     }
+        
+        public boolean confirmReturn(String barcode) {
+            try{
+                Connection connection = BibliothequeDAO.getConnection();
+                String query="UPDATE booklending SET return_date = now() WHERE concat(bookitem_barcode,account_id) = ?";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, barcode);
+                int affectedRows = statement.executeUpdate();
+                if(affectedRows > 0) return true;
+            }
+            catch(SQLException ex){
+                ex.printStackTrace();
+            }
+            return false;
+        }
+        
+        public String getReturnDate (String barcode) {
+        try {
+            Connection connection = BibliothequeDAO.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select return_date from booklending where concat(bookitem_barcode,account_id)='"+barcode+"';");
+            while(rs.next()) {
+                 return rs.getTimestamp(1).toString();
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

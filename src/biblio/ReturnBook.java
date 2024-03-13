@@ -28,6 +28,8 @@ public class ReturnBook extends javax.swing.JFrame {
      */
     public ReturnBook() {
         initComponents();
+        BookLendingService BLS = new BookLendingService();
+        BookLendingsTable(BLS.getAllBookLendings());
     }
 
     
@@ -192,10 +194,12 @@ public class ReturnBook extends javax.swing.JFrame {
                         if(bl!=null) {
                             this.setVisible(false);
                             ConfirmReturn obj = new ConfirmReturn(AS.getAccountbyId(bl.getAccount_id()),BIS.getBookItembyBarcode(bl.getBookItem_barcode()), bl);
-                            obj.setVisible(true);   
+                            obj.setVisible(true);
+                            Barcode_Scanner.scanningThread.interrupt();
                         }
                         else {
                             JOptionPane.showMessageDialog(null,"NO BOOK LENDING FOUND WITH THIS BARCODE");
+                            Barcode_Scanner.scanningThread.interrupt();
                         }
                         //...........................................
                         break;

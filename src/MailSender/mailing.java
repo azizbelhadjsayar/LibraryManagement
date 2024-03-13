@@ -142,5 +142,57 @@ public class mailing {
             e.printStackTrace();
         }
     }
+    
+    
+    public static void ReturnConfirmationEmailSender(Account ac, String title, String author, String returnDate, Double fees) {
+        final String username = "bibliotunisie@gmail.com";
+        final String password = "pglc sebl geux kewn";
+        Properties props = new Properties();
+        props.put("mail.smtp.user",username); 
+        props.put("mail.smtp.host", "smtp.gmail.com"); 
+        props.put("mail.smtp.port", "25"); 
+        props.put("mail.debug", "true"); 
+        props.put("mail.smtp.auth", "true"); 
+        props.put("mail.smtp.starttls.enable","true"); 
+        props.put("mail.smtp.EnableSSL.enable","true");
+        props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");   
+        props.setProperty("mail.smtp.socketFactory.fallback", "false");   
+        props.setProperty("mail.smtp.port", "465");   
+        props.setProperty("mail.smtp.socketFactory.port", "465"); 
+
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("bibliotunisie@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(ac.getEmail()));
+            message.setSubject("Book Return Confirmation");
+            Multipart multipart = new MimeMultipart();
+            BodyPart textPart = new MimeBodyPart();
+            textPart.setText("Dear "+ac.getUsername()+",\n\n"
+                            + "We hope this message finds you well.\n\n"
+                            + "Thank you for returning the book from our library. Below are the details of the returned book:Thank you for returning the book from our library. Below are the details of the returned book:\n\n"
+                            + "Book Details:\n"
+                            + "  - Title : "+title+"\n"
+                            + "  - Author : "+author+"\n"
+                            + "  - Return Date : "+ returnDate+"\n\n"
+                            + "Late fee information :\n"
+                            + "  - Fee ammount : "+fees+" TND\n\n"
+                            + "If you have any questions or concerns regarding this return or the late fee details, please feel free to contact our library staff.\n\n"
+                            + "Thank you for using the services of BIBLIOTHEQUE TUNISIE. We appreciate your prompt return of the book.\n\n"
+                            + "Best regards,\n"
+                            + "BIBLIOTHEQUE TUNISIE");
+            multipart.addBodyPart(textPart);
+            message.setContent(multipart);
+            Transport.send(message);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 	
 }

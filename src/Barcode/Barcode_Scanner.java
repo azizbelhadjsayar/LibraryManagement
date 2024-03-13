@@ -30,6 +30,7 @@ import org.opencv.videoio.VideoCapture;
  * @author LENOVO
  */
 public class Barcode_Scanner extends JFrame{
+    public static Thread scanningThread;
     private JLabel cameraScreen;
     private VideoCapture capture;
     private Mat image;
@@ -43,7 +44,7 @@ public class Barcode_Scanner extends JFrame{
         cameraScreen.setBounds(0, 0, 640, 480);
         add(cameraScreen);
         
-        setSize(new Dimension(640,560));
+        setSize(new Dimension(640,480));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
@@ -86,6 +87,7 @@ public class Barcode_Scanner extends JFrame{
             }
             */
         }
+        capture.release();
     }
     
     private BufferedImage createBufferedImage(byte[] imageData) throws IOException {
@@ -128,12 +130,13 @@ public class Barcode_Scanner extends JFrame{
            @Override
            public void run() {
                Barcode_Scanner camera = new Barcode_Scanner();
-               new Thread(new Runnable() {
+               camera.scanningThread = new Thread(new Runnable() {
                    @Override
                    public void run() {
                        camera.startCamera();
                    }
-               }).start();
+               });
+               camera.scanningThread.start();//.start();
            }
        });
    }

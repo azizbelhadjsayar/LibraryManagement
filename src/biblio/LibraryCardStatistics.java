@@ -85,6 +85,7 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
         idSearchTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Library Cards", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 24), new java.awt.Color(0, 153, 153))); // NOI18N
 
@@ -196,6 +197,7 @@ public class LibraryCardStatistics extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void idSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idSearchButtonActionPerformed
