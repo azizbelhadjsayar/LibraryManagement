@@ -4,14 +4,16 @@
  */
 package Interfaces;
 import Entities.Book;
+import java.util.ArrayList;
 /**
  *
  * @author LENOVO
  */
-public interface BookDAOInterface {
+public interface BookDAOInterface<T> {
     boolean addBook(Book b);
     boolean deleteBook(Book b);
     boolean editBook(Book b);
     Book searchBookbyTitle(String title);
     Book getBookbyISBN(int isbn);
+    ArrayList<T> getBooks();
 }

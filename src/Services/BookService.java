@@ -80,7 +80,7 @@ public class BookService implements BookDAOInterface {
         }
         return null;
     }
-
+    
     @Override
     public Book getBookbyISBN(int isbn) {
         try {
@@ -91,6 +91,27 @@ public class BookService implements BookDAOInterface {
                  return new Book(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getString(4),rs.getInt(5), rs.getInt(6), rs.getDouble(7));
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public record bookRow(int ISBN, String title, String author, String language){
+    }    
+    
+    public ArrayList<bookRow> getBooks(){
+        try{
+            Connection connection = BibliothequeDAO.getConnection();
+            Statement statement = connection.createStatement();
+            ArrayList<bookRow> bookRows = new ArrayList<>();
+            ResultSet rs = statement.executeQuery("SELECT b.isbn, b.title, a.fullname, b.language FROM Book b JOIN Author a ON(b.author_id = a.id)");
+            while(rs.next()){
+                bookRow bookRow = new bookRow(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+                bookRows.add(bookRow);
+            }
+            return bookRows;
+        }
+        catch(Exception e){
             e.printStackTrace();
         }
         return null;

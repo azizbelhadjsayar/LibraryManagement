@@ -4,19 +4,100 @@
  */
 package biblio;
 
+import Entities.Account;
+import Services.AccountService;
+import Services.BookLendingService;
+import Services.BookService;
+import Services.BookService.bookRow;
+import Services.LibraryCardService;
+import Services.LibraryCardService.Row;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author LENOVO
  */
 public class LibrarianMenu extends javax.swing.JFrame {
-
+    
+    public final int membersTableColumns = 4;
+    public final int booksTableColumns = 4;
     /**
      * Creates new form LibrarianMenu
      */
     public LibrarianMenu() {
         initComponents();
+        membersTable();
+        booksTable();
+        setLabels();
+        
     }
+    
+    public void booksTable(){
+        try{
+            DefaultTableModel model = (DefaultTableModel)booksTable.getModel();
+            model.setRowCount(0);
+            BookService bs = new BookService();
+            ArrayList<bookRow> books = bs.getBooks();
+            Object rowData[] = new Object[booksTableColumns];
+            
+            for(bookRow r : books){
+                rowData[0] = r.ISBN();
+                rowData[1] = r.title();
+                rowData[2] = r.author();
+                rowData[3] = r.language();
+                model.addRow(rowData);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    public void setLabels(){
+        AccountService as = new AccountService();
+        LibraryCardService lcs = new LibraryCardService();
+        BookLendingService bls = new BookLendingService();
+        ArrayList<Account> members = as.getAllMembers();
+        ArrayList<Row> active = lcs.getActiveLibraryCards();
+        ArrayList<BookLendingService.Row> lendings = bls.getAllBookLendings();
+        numberMembersLabel.setText(String.valueOf(members.size()));
+        numberActiveLabel.setText(String.valueOf(active.size()));
+        numberLendingsLabel.setText(String.valueOf(lendings.size()));
+        
 
+    }
+    
+    public void membersTable(){
+        try{
+            DefaultTableModel model = (DefaultTableModel)membersTable.getModel();
+            model.setRowCount(0);
+            AccountService as = new AccountService();
+            ArrayList<Account> members = as.getAllMembers();
+            Object rowData[] = new Object[membersTableColumns];
+            
+            for(Account a : members){
+                rowData[0] = a.getId();
+                rowData[1] = a.getUsername();
+                rowData[2] = a.getRole();
+                rowData[3] = a.getDateOfCreation();
+                model.addRow(rowData);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    public void membersNumber(){
+        try{
+            AccountService as = new AccountService();
+            ArrayList<Account> members = as.getAllMembers();
+            
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,6 +123,24 @@ public class LibrarianMenu extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        numberMembersLabel = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jPanel12 = new javax.swing.JPanel();
+        numberActiveLabel = new javax.swing.JLabel();
+        jPanel13 = new javax.swing.JPanel();
+        numberLendingsLabel = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        booksTable = new javax.swing.JTable();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        membersTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -93,7 +192,7 @@ public class LibrarianMenu extends javax.swing.JFrame {
         });
         jPanel9.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 200, 30));
 
-        jPanel4.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 340, 60));
+        jPanel4.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 340, 60));
 
         jPanel5.setBackground(new java.awt.Color(51, 51, 51));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -159,7 +258,163 @@ public class LibrarianMenu extends javax.swing.JFrame {
 
         jPanel4.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 340, 60));
 
+        jPanel10.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel10.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/biblio/assets/icons8_Book_Shelf_50px.png"))); // NOI18N
+        jLabel10.setText("  Return book");
+        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel10MouseClicked(evt);
+            }
+        });
+        jPanel10.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 200, 30));
+
+        jPanel4.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 340, 60));
+
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 340, 960));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel11.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 0, 0, 0, new java.awt.Color(255, 51, 51)));
+        jPanel11.setPreferredSize(new java.awt.Dimension(260, 1));
+        jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        numberMembersLabel.setBackground(new java.awt.Color(102, 102, 102));
+        numberMembersLabel.setFont(new java.awt.Font("Segoe UI", 0, 50)); // NOI18N
+        numberMembersLabel.setForeground(new java.awt.Color(102, 102, 102));
+        numberMembersLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        numberMembersLabel.setText("10");
+        jPanel11.add(numberMembersLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 230, -1));
+
+        jLabel2.setBackground(new java.awt.Color(102, 102, 102));
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel2.setText("No Of Members");
+
+        jLabel11.setBackground(new java.awt.Color(102, 102, 102));
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel11.setText("No Of Active Members");
+
+        jPanel12.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 0, 0, 0, new java.awt.Color(102, 102, 255)));
+        jPanel12.setPreferredSize(new java.awt.Dimension(260, 1));
+        jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        numberActiveLabel.setBackground(new java.awt.Color(102, 102, 102));
+        numberActiveLabel.setFont(new java.awt.Font("Segoe UI", 0, 50)); // NOI18N
+        numberActiveLabel.setForeground(new java.awt.Color(102, 102, 102));
+        numberActiveLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        numberActiveLabel.setText("10");
+        jPanel12.add(numberActiveLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 220, -1));
+
+        jPanel13.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 0, 0, 0, new java.awt.Color(255, 51, 51)));
+        jPanel13.setPreferredSize(new java.awt.Dimension(260, 1));
+        jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        numberLendingsLabel.setBackground(new java.awt.Color(102, 102, 102));
+        numberLendingsLabel.setFont(new java.awt.Font("Segoe UI", 0, 50)); // NOI18N
+        numberLendingsLabel.setForeground(new java.awt.Color(102, 102, 102));
+        numberLendingsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        numberLendingsLabel.setText("10");
+        jPanel13.add(numberLendingsLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 200, -1));
+
+        jLabel14.setBackground(new java.awt.Color(102, 102, 102));
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel14.setText("No Of Lended Books");
+
+        booksTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ISBN", "Title", "Author", "Language"
+            }
+        ));
+        jScrollPane1.setViewportView(booksTable);
+
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel15.setText("Student Details");
+
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel16.setText("Books Details");
+
+        membersTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Student ID", "Username", "Role", "Date of creation"
+            }
+        ));
+        jScrollPane2.setViewportView(membersTable);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel16)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(102, 102, 102)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGap(86, 86, 86)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel14)))
+                                .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addGap(2, 2, 2))))
+                .addContainerGap(685, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(346, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 70, 1570, 950));
 
         setSize(new java.awt.Dimension(1919, 1030));
         setLocationRelativeTo(null);
@@ -189,6 +444,11 @@ public class LibrarianMenu extends javax.swing.JFrame {
         this.setVisible(false);
         new BookLending().setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_jLabel7MouseClicked
+
+    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
+        new ReturnBook().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jLabel10MouseClicked
 
     /**
      * @param args the command line arguments
@@ -226,7 +486,14 @@ public class LibrarianMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable booksTable;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
@@ -234,12 +501,23 @@ public class LibrarianMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable membersTable;
+    private javax.swing.JLabel numberActiveLabel;
+    private javax.swing.JLabel numberLendingsLabel;
+    private javax.swing.JLabel numberMembersLabel;
     // End of variables declaration//GEN-END:variables
 }
