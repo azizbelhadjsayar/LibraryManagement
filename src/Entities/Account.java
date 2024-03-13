@@ -35,7 +35,7 @@ public class Account {
 		this.dateOfCreation = formattedDate;
 	}
 	
-	public Account(int id, String username, String password, String email, String role, String dateOfCreation, String question, String answer) {
+	public Account(int id, String username, String password, String email, String role, String question, String answer, String dateOfCreation) {
 		this.id=id;
 		this.username = username;
 		this.password = password;
@@ -82,7 +82,7 @@ public class Account {
 	public void setDateOfCreation(String dateOfCreation) {
 		this.dateOfCreation = dateOfCreation;
 	}
-        	public String getQuestion() {
+        public String getQuestion() {
 		return question;
 	}
 
