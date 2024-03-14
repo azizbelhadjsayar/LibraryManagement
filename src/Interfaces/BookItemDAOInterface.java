@@ -11,5 +11,5 @@ import Entities.BookItem;
  * @author LENOVO
  */
 public interface BookItemDAOInterface {
-    void addBookItem(int isbn);
+    void addBookItem(int isbn, String barcode);
 }

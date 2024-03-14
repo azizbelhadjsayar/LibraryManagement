@@ -23,11 +23,11 @@ public class BookItemService implements BookItemDAOInterface{
 
     
     @Override
-    public void addBookItem(int isbn) {
+    public void addBookItem(int isbn, String barcode) {
         
         try {
             Connection connection = BibliothequeDAO.getConnection();
-            BookItem bi = new BookItem(isbn);
+            BookItem bi = new BookItem(isbn, barcode);
             String INSERT_BOOKITEM_SQL = "INSERT INTO bookitem (isbn_book, barcode, status) VALUES (?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(INSERT_BOOKITEM_SQL);
             statement.setInt(1, bi.getBookISBN());

@@ -40,8 +40,7 @@ public class BookService implements BookDAOInterface {
                 int nbitems =  b.getNbItems();
                 BookItemService BIS = new BookItemService();
                 for(int i=0; i<nbitems; i++) {
-                    BIS.addBookItem(isbn);
-                    sleep(100);
+                    BIS.addBookItem(isbn, b.getItemsBarcodes()[i]);
                 }
             }
             statement.close();

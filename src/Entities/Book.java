@@ -16,6 +16,7 @@ public class Book {
     private int nbPages;
     private int nbItems;
     private double price;
+    private String[] barcodes = null;
     
     public Book(String t, int author, String lang, int nbp, int nbi, double pr) {
         this.ISBN=0;
@@ -27,6 +28,18 @@ public class Book {
         this.price=pr;
     }
     
+    public Book(String t, int author, String lang, int nbp, int nbi,String[]barcodes, double pr) {
+        this.ISBN=0;
+        this.title=t;
+        this.authorID=author;
+        this.language=lang;
+        this.nbPages=nbp;
+        this.nbItems=nbi;
+        this.price=pr;
+        this.barcodes = barcodes;
+    }
+    
+    
     public Book(int isbn, String t, int author, String lang, int nbp, int nbi, double pr) {
         this.ISBN=isbn;
         this.title=t;
@@ -37,11 +50,16 @@ public class Book {
         this.price=pr;
     }
     
+    
     public double getPrice() {
 	return price;
     }
     public void setPrice(double p) {
           price = p;
+    }
+    
+    public String[] getItemsBarcodes() {
+        return barcodes;
     }
     
     

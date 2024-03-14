@@ -16,9 +16,9 @@ public class BookItem {
 	    return formattedDate;
     }
 
-	public BookItem(int bookISBN) {
+	public BookItem(int bookISBN, String bc) {
 		this.bookISBN = bookISBN;
-		this.barcode = getCurrentTimeStamp();
+		this.barcode = bc;
 		this.id=0;
 		this.status=false;
 	}

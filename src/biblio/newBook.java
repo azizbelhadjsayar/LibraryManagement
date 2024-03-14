@@ -4,13 +4,21 @@
  */
 package biblio;
 
+import Barcode.Barcode_Scanner;
 import Entities.Author;
 import Entities.Book;
+import Entities.Booklending;
+import Services.AccountService;
 import Services.AuthorService;
+import Services.BookItemService;
+import Services.BookLendingService;
 import Services.BookService;
 import java.awt.event.KeyEvent;
+import static java.lang.Thread.sleep;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,6 +32,17 @@ public class newBook extends javax.swing.JFrame {
     public newBook() {
         initComponents();
         
+    }
+     
+    private boolean itemBarcodeExists(String searchString) {
+        DefaultTableModel model = (DefaultTableModel) itemsBARCODES.getModel();
+        for (int row = 0; row < model.getRowCount(); row++) {
+            Object rowData = model.getValueAt(row, 0); // Assuming the string is in the first column
+            if (rowData != null && rowData.toString().equals(searchString)) {
+                return true; // String already exists
+            }
+        }
+        return false; // String does not exist
     }
 
     /**
@@ -39,7 +58,6 @@ public class newBook extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        itemsInput = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         languageInput = new javax.swing.JTextField();
         pagesInput = new javax.swing.JTextField();
@@ -52,6 +70,9 @@ public class newBook extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        itemsBARCODES = new javax.swing.JTable();
+        scanBUTTON = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -69,12 +90,6 @@ public class newBook extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Title");
-
-        itemsInput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                itemsInputKeyTyped(evt);
-            }
-        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Language");
@@ -94,6 +109,9 @@ public class newBook extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("Price");
 
+        jButton1.setBackground(new java.awt.Color(204, 255, 255));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 153, 153));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/biblio/assets/add.png"))); // NOI18N
         jButton1.setText("ADD");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -126,6 +144,25 @@ public class newBook extends javax.swing.JFrame {
             }
         });
 
+        itemsBARCODES.setBackground(new java.awt.Color(204, 255, 204));
+        itemsBARCODES.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "BARCODES"
+            }
+        ));
+        jScrollPane1.setViewportView(itemsBARCODES);
+
+        scanBUTTON.setIcon(new javax.swing.ImageIcon(getClass().getResource("/biblio/assets/barcode-scan.png"))); // NOI18N
+        scanBUTTON.setText("SCAN ITEM");
+        scanBUTTON.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                scanBUTTONActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -138,40 +175,49 @@ public class newBook extends javax.swing.JFrame {
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(70, 70, 70))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
-                        .addComponent(jLabel9)))
+                        .addComponent(jLabel9))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(priceInput, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(titleInput, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(languageInput, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(pagesInput, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(itemsInput, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(authorInput, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 37, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(50, 50, 50)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel19)
-                        .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(154, 154, 154))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(titleInput, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(languageInput, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(pagesInput, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(authorInput, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 29, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(153, 153, 153)
+                        .addComponent(priceInput, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(scanBUTTON))))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(134, 134, 134)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,18 +251,20 @@ public class newBook extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(pagesInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(itemsInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(priceInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))))
-                .addGap(39, 39, 39)
+                            .addComponent(jLabel5))))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(priceInput, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(scanBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         pack();
@@ -239,9 +287,14 @@ public class newBook extends javax.swing.JFrame {
         int author_id = Integer.parseInt(author.split("\\.")[0]);
         String language = languageInput.getText();
         int pages = Integer.parseInt(pagesInput.getText());
-        int nbItems = Integer.parseInt(itemsInput.getText());
+        DefaultTableModel model = (DefaultTableModel) itemsBARCODES.getModel();
+        int nbItems = model.getRowCount();
+        String[] itemsArray = new String[model.getRowCount()];
+        for (int row = 0; row <model.getRowCount(); row++) {
+            itemsArray[row] = model.getValueAt(row, 0).toString();
+        }
         double price = Double.parseDouble(priceInput.getText());
-        Book b = new Book(title, author_id, language, pages, nbItems, price);
+        Book b = new Book(title, author_id, language, pages, nbItems,itemsArray, price);
         BookService BS = new BookService();
         BS.addBook(b);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -262,16 +315,6 @@ public class newBook extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_pagesInputKeyTyped
 
-    private void itemsInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_itemsInputKeyTyped
-        char keyChar = evt.getKeyChar();
-        // Check if the key is a number (0-9) or backspace
-        if (Character.isDigit(keyChar) || keyChar == KeyEvent.VK_BACK_SPACE) {
-     
-        } else {
-            evt.consume();
-        }
-    }//GEN-LAST:event_itemsInputKeyTyped
-
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
         this.setVisible(false);
         LibrarianMenu obj = new LibrarianMenu();
@@ -282,6 +325,34 @@ public class newBook extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jLabel19MouseClicked
 
+    private void scanBUTTONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scanBUTTONActionPerformed
+        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+            // Simulate a long-running asynchronous task
+            try {
+                Barcode_Scanner.barcodeResult =null;
+                Barcode_Scanner.startScanning();
+                while(true) {
+                    String result = Barcode_Scanner.barcodeResult;
+                    sleep(100);
+                    if (result!=null) {
+                        //traitement ................................
+                        if (!itemBarcodeExists(result)) {
+                            DefaultTableModel model = (DefaultTableModel) itemsBARCODES.getModel();
+                            model.addRow(new Object[]{result});
+                        } else {
+                            JOptionPane.showMessageDialog(null, "THIS BARCODE IS ALREADY SCANNED");
+                        }
+                        //...........................................
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
+    }//GEN-LAST:event_scanBUTTONActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -289,7 +360,7 @@ public class newBook extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> authorInput;
-    private javax.swing.JTextField itemsInput;
+    private javax.swing.JTable itemsBARCODES;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel19;
@@ -301,9 +372,11 @@ public class newBook extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField languageInput;
     private javax.swing.JTextField pagesInput;
     private javax.swing.JTextField priceInput;
+    private javax.swing.JButton scanBUTTON;
     private javax.swing.JTextField titleInput;
     // End of variables declaration//GEN-END:variables
 }
