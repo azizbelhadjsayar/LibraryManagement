@@ -14,6 +14,6 @@ public interface LibraryCardDAOInterface<T> {
         T getInfoById(int id);
         T getInfoByEmail(String email);
         boolean updateSubscription(int id, String date);
-        
+        int getLibraryCardAccountId(String barcode);
 	
 }

@@ -24,7 +24,9 @@ public class AccountService implements AccountDAOInterface {
 	private static final String NUMERIC_CHARACTERS = "0123456789";
 	private static final String SPECIAL_CHARACTERS = "!@#$%^&*()-=_+[]{}|;:'\"<>,.?/";
 	
-	
+	 public record Row(int id, String username, String email){
+        
+         }
 
 	@Override
 	public boolean insertAccount(Account a) {
@@ -285,6 +287,22 @@ public class AccountService implements AccountDAOInterface {
     
     public boolean setAccountActive(Account a) {
         return false;
+    }
+    
+    public Row getScannedAccount(int id) {
+        try{
+            Connection connection = BibliothequeDAO.getConnection();
+            java.sql.Statement statement = connection.createStatement();
+            String query = "select id,username,email from account where id = "+id+";";
+            ResultSet rs = statement.executeQuery(query);
+            while(rs.next()){
+                return new Row(rs.getInt(1), rs.getString(2), rs.getString(3));
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 	
 }

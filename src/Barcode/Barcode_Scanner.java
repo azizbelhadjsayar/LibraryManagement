@@ -39,11 +39,9 @@ public class Barcode_Scanner extends JFrame{
     
     public Barcode_Scanner() {
         setLayout(null);
-        
         cameraScreen = new JLabel();
         cameraScreen.setBounds(0, 0, 640, 480);
-        add(cameraScreen);
-        
+        add(cameraScreen);        
         setSize(new Dimension(640,480));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -102,7 +100,6 @@ public class Barcode_Scanner extends JFrame{
             BinaryBitmap bitmap = new BinaryBitmap(new GlobalHistogramBinarizer(source));
             MultiFormatReader reader = new MultiFormatReader();
             Result result = reader.decode(bitmap);
-
             // Show barcode content using JOptionPane
             //JOptionPane.showMessageDialog(null, "Barcode: " + result.getText());
             //this.setVisible(false);

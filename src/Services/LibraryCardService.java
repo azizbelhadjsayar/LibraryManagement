@@ -158,6 +158,24 @@ public class LibraryCardService implements LibraryCardDAOInterface{
         return false;
         
     }
+
+    @Override
+    public int getLibraryCardAccountId(String barcode) {
+        try {
+            Connection connection = BibliothequeDAO.getConnection();
+            String query = "SELECT account_id from LibraryCard where barcode = ?;";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, barcode);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
         
     public record Row(int id, String email, String username, String issuedAt, String dateEndSubscription, boolean active){
         
@@ -181,5 +199,7 @@ public class LibraryCardService implements LibraryCardDAOInterface{
         }
         return null;
     }
+    
+    
 
 }

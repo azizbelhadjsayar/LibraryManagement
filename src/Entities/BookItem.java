@@ -11,7 +11,7 @@ public class BookItem {
 	
     private String getCurrentTimeStamp() {
 	    LocalDateTime today = LocalDateTime.now();
-	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSS");
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmmsS");
 	    String formattedDate = today.format(formatter);
 	    return formattedDate;
     }

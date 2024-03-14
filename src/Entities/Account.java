@@ -35,7 +35,7 @@ public class Account {
 		this.dateOfCreation = formattedDate;
 	}
 	
-	public Account(int id, String username, String password, String email, String role, String question, String answer, String dateOfCreation) {
+	public Account(int id, String username, String password, String email, String role, String dateOfCreation, String question, String answer) {
 		this.id=id;
 		this.username = username;
 		this.password = password;
@@ -45,7 +45,7 @@ public class Account {
                 this.question = question;
                 this.answer = answer;
 	}
-	
+       
 	public int getId() {
 		return id;
 	}
