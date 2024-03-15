@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 public interface BookDAOInterface<T> {
     boolean addBook(Book b);
-    boolean deleteBook(Book b);
-    boolean editBook(Book b);
+    boolean deleteBook(int ISBN);
+    boolean editBook(int isbn, String title, int authorID, String lang, int pages, double price);
     Book searchBookbyTitle(String title);
     Book getBookbyISBN(int isbn);
     ArrayList<T> getBooks();

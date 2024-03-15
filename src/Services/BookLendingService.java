@@ -149,9 +149,10 @@ public class BookLendingService implements BookLendingDAOInterface{
         try {
             Connection connection = BibliothequeDAO.getConnection();
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("select * from booklending where concat(bookitem_barcode,account_id)='"+barcode+"';");
+            ResultSet rs = st.executeQuery("select * from booklending where return_date is null and concat(bookitem_barcode,account_id)='"+barcode+"';");
             while(rs.next()) {
                  Booklending bl = new Booklending(rs.getInt(1),rs.getString(2),rs.getInt(3), rs.getTimestamp(4).toLocalDateTime(), rs.getTimestamp(5).toLocalDateTime());
+                 System.out.print(rs.getTimestamp(6));
                  return bl;
             }
             return null;

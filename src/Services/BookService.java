@@ -52,12 +52,50 @@ public class BookService implements BookDAOInterface {
     }
 
     @Override
-    public boolean deleteBook(Book b) {
+    public boolean deleteBook(int isbn) {
+        try {
+            Connection connection = BibliothequeDAO.getConnection();
+            PreparedStatement preparedStatement;
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery("select l.bookitem_barcode from booklending l join bookitem bi on l.bookitem_barcode = bi.barcode where bi.isbn_book="+isbn+";");
+            while(rs.next()) {
+                String deleteLendings = "delete from booklending where bookitem_barcode = ?";
+                preparedStatement = connection.prepareStatement(deleteLendings);
+                preparedStatement.setString(1, rs.getString(1));
+                int lendingDeleted = preparedStatement.executeUpdate();
+            }
+            String deleteBooks = "delete from book where isbn = ?";
+            String deleteItems = "delete from bookitem where isbn_book = ?";
+            preparedStatement = connection.prepareStatement(deleteItems);
+            preparedStatement.setInt(1, isbn);
+            int itemsDeleted = preparedStatement.executeUpdate();
+            preparedStatement = connection.prepareStatement(deleteBooks);
+            preparedStatement.setInt(1, isbn);
+            int booksDeleted = preparedStatement.executeUpdate();
+            return booksDeleted==1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
-    public boolean editBook(Book b) {
+    public boolean editBook(int isbn, String title, int authorID, String lang, int pages, double price) {
+        try {
+            Connection connection = BibliothequeDAO.getConnection();
+            String updateQuery = "UPDATE book SET title = ?, author_id = ?, language = ?, numberofpages = ?, price = ? WHERE isbn = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+            preparedStatement.setString(1, title);
+            preparedStatement.setInt(2, authorID);
+            preparedStatement.setString(3, lang);
+            preparedStatement.setInt(4, pages);
+            preparedStatement.setDouble(5, price);
+            preparedStatement.setInt(6, isbn);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected==1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 

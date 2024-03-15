@@ -249,7 +249,7 @@ public class ReturnBook extends javax.swing.JFrame {
                             Barcode_Scanner.scanningThread.interrupt();
                         }
                         else {
-                            JOptionPane.showMessageDialog(null,"NO BOOK LENDING FOUND WITH THIS BARCODE");
+                            JOptionPane.showMessageDialog(null,"NO NOT RETURNED BOOK LENDING IS FOUND WITH THIS BARCODE");
                             Barcode_Scanner.scanningThread.interrupt();
                         }
                         //...........................................
