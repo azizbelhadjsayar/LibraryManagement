@@ -44,7 +44,7 @@ public class BookService implements BookDAOInterface {
                 }
             }
             statement.close();
-                
+            return affectedRows==1;             
         } catch (Exception e) {
             e.printStackTrace();
         }

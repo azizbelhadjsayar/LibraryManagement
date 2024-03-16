@@ -291,7 +291,13 @@ public class newBook extends javax.swing.JFrame {
         double price = Double.parseDouble(priceInput.getText());
         Book b = new Book(title, author_id, language, pages, nbItems,itemsArray, price);
         BookService BS = new BookService();
-        BS.addBook(b);
+        boolean added = BS.addBook(b);
+        if(added)
+            JOptionPane.showMessageDialog(null, "THE BOOK IS ADDED SUCCESSFULLY WITH "+nbItems+" ITEMS");
+        else
+            JOptionPane.showMessageDialog(null, "AN ERROR OCCURED WHILE ADDING THE BOOK");
+        this.setVisible(false);
+        new newBook().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked

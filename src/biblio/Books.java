@@ -139,6 +139,7 @@ public class Books extends javax.swing.JFrame {
 
         isbnInput.setEditable(false);
         isbnInput.setBackground(new java.awt.Color(204, 204, 255));
+        isbnInput.setDisabledTextColor(new java.awt.Color(102, 102, 102));
         isbnInput.setEnabled(false);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
