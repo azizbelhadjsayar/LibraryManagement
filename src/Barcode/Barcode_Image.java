@@ -1,4 +1,4 @@
-package BARCODE;
+package Barcode;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;

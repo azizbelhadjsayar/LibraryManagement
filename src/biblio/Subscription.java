@@ -30,6 +30,28 @@ public class Subscription extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void libraryCardsTable(String barcode){
+        
+        try{
+            LibraryCardService lcs = new LibraryCardService();
+            DefaultTableModel model = (DefaultTableModel)libraryCardsTable.getModel();
+            ArrayList<Row> liste = new ArrayList<>();
+            Row row = lcs.getInfoByBarcode(barcode);
+            Object rowData[] = new Object[6];
+            for(Row r : liste){
+                rowData[0] = r.id();
+                rowData[1] = r.email();
+                rowData[2] = r.username();
+                rowData[3] = r.issuedAt();
+                rowData[4] = r.dateEndSubscription();
+                rowData[5] = r.active();
+                model.addRow(rowData);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        } 
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -213,6 +235,7 @@ public class Subscription extends javax.swing.JFrame {
                     sleep(100);
                     if (result!=null) {
                         //traitement ................................
+                        libraryCardsTable(result);
                         System.out.print(result);
                         //...........................................
                         break;

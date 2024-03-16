@@ -4,7 +4,7 @@
  */
 package Services;
 
-import BARCODE.Barcode_Image;
+import Barcode.Barcode_Image;
 import Entities.Account;
 import Entities.BookItem;
 import Entities.Booklending;

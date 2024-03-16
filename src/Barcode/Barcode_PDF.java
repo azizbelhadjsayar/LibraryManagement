@@ -1,4 +1,4 @@
-package BARCODE;
+package Barcode;
 import java.io.FileOutputStream;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;

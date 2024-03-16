@@ -1,6 +1,6 @@
 package Services;
 
-import BARCODE.Barcode_Image;
+import Barcode.Barcode_Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -175,6 +175,26 @@ public class LibraryCardService implements LibraryCardDAOInterface{
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    public Row getInfoByBarcode(String barcode) {
+            Row row = null;
+            try {
+            Connection connection = BibliothequeDAO.getConnection();
+            String query = "SELECT a.id, a.email, a.username, l.issued_at, l.date_end_subscription, l.date_end_subscription > NOW() FROM Account a JOIN librarycard l WHERE l.barcode = ?;";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, barcode);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                row = new Row(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getBoolean(6));
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return row;
+
     }
         
     public record Row(int id, String email, String username, String issuedAt, String dateEndSubscription, boolean active){
