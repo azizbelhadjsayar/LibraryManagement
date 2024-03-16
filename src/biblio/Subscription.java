@@ -35,18 +35,17 @@ public class Subscription extends javax.swing.JFrame {
         try{
             LibraryCardService lcs = new LibraryCardService();
             DefaultTableModel model = (DefaultTableModel)libraryCardsTable.getModel();
-            ArrayList<Row> liste = new ArrayList<>();
-            Row row = lcs.getInfoByBarcode(barcode);
+            model.setRowCount(0);
+            Row r = lcs.getInfoByBarcode(barcode);
             Object rowData[] = new Object[6];
-            for(Row r : liste){
-                rowData[0] = r.id();
-                rowData[1] = r.email();
-                rowData[2] = r.username();
-                rowData[3] = r.issuedAt();
-                rowData[4] = r.dateEndSubscription();
-                rowData[5] = r.active();
-                model.addRow(rowData);
-            }
+            rowData[0] = r.id();
+            rowData[1] = r.email();
+            emailTextField.setText(r.email());
+            rowData[2] = r.username();
+            rowData[3] = r.issuedAt();
+            rowData[4] = r.dateEndSubscription();
+            rowData[5] = r.active();
+            model.addRow(rowData);
         }
         catch(Exception e){
             e.printStackTrace();
@@ -217,6 +216,9 @@ public class Subscription extends javax.swing.JFrame {
         LibraryCardService lCS = new LibraryCardService();
         try{
             lCS.updateSubscription(lCS.getInfoByEmail(emailTextField.getText()).id(), date);
+            JOptionPane.showMessageDialog(null, "The update is set successfully", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+            this.setVisible(false);
+            new LibraryCardStatistics().setVisible(true);
         }
         catch(Exception ex){
             JOptionPane.showMessageDialog(rootPane, "The modification failed", "Error", JOptionPane.ERROR_MESSAGE );
