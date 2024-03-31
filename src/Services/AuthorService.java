@@ -98,5 +98,21 @@ public class AuthorService implements AuthorDAOInterface{
         }
         return null;
     }
+        
+    public boolean updateAuthorByFullname(String fullname, int id){
+        try{
+            Connection connection = BibliothequeDAO.getConnection();
+            String updateQuery = "UPDATE author SET fullname = ? WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+            preparedStatement.setString(1, fullname);
+            preparedStatement.setInt(2, id);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected==1;
+        }
+        catch(SQLException e){
+            e.printStackTrace();  
+        }
+        return false;
+    }
     
 }

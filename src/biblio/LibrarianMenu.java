@@ -147,6 +147,8 @@ public class LibrarianMenu extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
+        jPanel17 = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 255));
@@ -456,7 +458,7 @@ public class LibrarianMenu extends javax.swing.JFrame {
         });
         jPanel14.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 210, 50));
 
-        jPanel4.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 340, 60));
+        jPanel4.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 340, 60));
 
         jPanel15.setBackground(new java.awt.Color(51, 51, 51));
         jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -474,6 +476,23 @@ public class LibrarianMenu extends javax.swing.JFrame {
         jPanel15.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 240, 50));
 
         jPanel4.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 340, -1));
+
+        jPanel17.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel17.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel17.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/biblio/assets/icons8_Book_Shelf_50px.png"))); // NOI18N
+        jLabel17.setText("UPDATE AUTHOR");
+        jLabel17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel17MouseClicked(evt);
+            }
+        });
+        jPanel17.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 230, 50));
+
+        jPanel4.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 340, 60));
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -545,6 +564,11 @@ public class LibrarianMenu extends javax.swing.JFrame {
         jPanel4.setVisible(false);
     }//GEN-LAST:event_jLabel1MouseClicked
 
+    private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
+        this.setVisible(false);
+        new UpdateAuthor().setVisible(true);
+    }//GEN-LAST:event_jLabel17MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -590,6 +614,7 @@ public class LibrarianMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -606,6 +631,7 @@ public class LibrarianMenu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
